@@ -111,7 +111,7 @@ Restart Claude Code — the skill is auto-detected and available in all projects
 
 ### <img src="assets/github-copilot-icon.png" height="37" valign="middle"> GitHub Copilot
 
-#### VS Code
+#### <img src="assets/vscode.png" height="20" valign="middle"> VS Code
 
 **Option A — Personal skill (available across all projects):**
 ```bash
@@ -129,21 +129,7 @@ cp -r customer-review-analyst/skills/customer-review-analyst your-project/.githu
 cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
 ```
 
-#### Eclipse
-
-**Custom instructions:**
-```bash
-cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
-```
-
-#### Xcode
-
-**Custom instructions:**
-```bash
-cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
-```
-
-#### JetBrains
+#### <img src="assets/jetbrains.png" height="20" valign="middle"> JetBrains
 
 **Option A — Personal skill (available across all projects):**
 ```bash
@@ -157,6 +143,20 @@ cp -r customer-review-analyst/skills/customer-review-analyst your-project/.githu
 ```
 
 **Option C — Custom instructions (always-on, no skill system needed):**
+```bash
+cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
+```
+
+#### <img src="assets/eclipse.png" height="20" valign="middle"> Eclipse
+
+**Custom instructions:**
+```bash
+cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
+```
+
+#### <img src="assets/xcode.png" height="20" valign="middle"> Xcode
+
+**Custom instructions:**
 ```bash
 cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
 ```
