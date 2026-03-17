@@ -109,7 +109,7 @@ Restart Claude Code — the skill is auto-detected and available in all projects
 
 ---
 
-### <img src="https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/light/github-copilot-color.png" height="20" valign="middle"> GitHub Copilot
+### <img src="assets/github-copilot-icon.png" height="20" valign="middle"> GitHub Copilot
 
 #### VS Code
 
@@ -163,7 +163,7 @@ cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.
 
 ---
 
-### <img src="https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/light/cursor-color.png" height="20" valign="middle"> Cursor
+### <img src="https://cursor.com/marketing-static/icon-512x512.png" height="20" valign="middle"> Cursor
 
 ```bash
 mkdir -p .cursor/rules
