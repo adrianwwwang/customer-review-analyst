@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Review Analyst — Turn Reviews Into Insight</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07070f;
+  --surface: #0d0d1c;
+  --surface-2: #13132a;
+  --border: #1c1c38;
+  --border-bright: #2a2a55;
+  --text: #e2e2f0;
+  --muted: #5a5a85;
+  --dim: #3a3a60;
+  --accent: #00e8c8;
+  --accent-glow: rgba(0,232,200,0.15);
+  --accent-2: #ff4d72;
+  --gold: #f0c040;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── GRAIN OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.35;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 2rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(7,7,15,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.nav-logo-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nav-logo-icon svg { width: 16px; height: 16px; }
+
+.nav-logo-name {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.gh-btn-star {
+  background: var(--surface-2);
+  border: 1px solid var(--border-bright);
+  color: var(--text);
+}
+
+.gh-btn-star:hover {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.gh-btn-fork {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.gh-btn-fork:hover {
+  border-color: var(--border-bright);
+  color: var(--text);
+}
+
+.gh-btn svg { flex-shrink: 0; }
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 2rem 80px;
+  overflow: hidden;
+}
+
+/* Animated data grid background */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.5;
+  animation: gridPulse 8s ease-in-out infinite;
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+/* Radial glow in hero center */
+.hero-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse at center,
+    rgba(0,232,200,0.07) 0%,
+    rgba(0,232,200,0.02) 40%,
+    transparent 70%);
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--border-bright);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.8s ease both;
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ── PRODUCT NAME: all three words equally dominant ── */
+.hero-name-wrapper {
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.8s 0.05s ease both;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.hero-name-main {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(56px, 10vw, 108px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  background: linear-gradient(140deg, #ffffff 0%, #ffffff 35%, #00e8c8 70%, #00d0b0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 32px rgba(0,232,200,0.22));
+}
+
+/* Tagline (was the headline) */
+.hero-sub {
+  margin-top: 1.2rem;
+  font-size: clamp(14px, 2vw, 17px);
+  font-weight: 300;
+  color: var(--muted);
+  max-width: 480px;
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.hero-actions {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  background: var(--accent);
+  color: #000;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  letter-spacing: -0.01em;
+}
+
+.btn-primary:hover {
+  background: #00ffda;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 32px rgba(0,232,200,0.3);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border-bright);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  border-color: var(--muted);
+  background: var(--surface);
+}
+
+/* Floating stats */
+.hero-stats {
+  margin-top: 2rem;
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+
+.stat-value .accent { color: var(--accent); }
+
+.stat-label {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--border);
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--dim);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: fadeUp 1s 0.8s ease both;
+  z-index: 1;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--dim), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* ── HERO PLATFORMS ── */
+.hero-platforms {
+  margin-top: 2.5rem;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.8s 0.5s ease both;
+  text-align: center;
+}
+
+.hero-platforms-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1.25rem;
+}
+
+.hero-platforms-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 3vw, 32px);
+  flex-wrap: nowrap;
+}
+
+.platform-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: default;
+  transition: transform 0.25s ease;
+}
+
+.platform-item:hover { transform: translateY(-4px); }
+
+.platform-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease;
+}
+
+.platform-item:hover .platform-icon {
+  box-shadow: 0 8px 28px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+.platform-icon img {
+  width: 60px;
+  height: 60px;
+  display: block;
+  object-fit: contain;
+  border-radius: 14px;
+}
+
+.platform-name {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.platform-item:hover .platform-name { color: var(--text); }
+
+/* ── SECTION COMMON ── */
+section {
+  padding: 100px 2rem;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-eyebrow::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+}
+
+.section-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.section-desc {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 560px;
+}
+
+/* ── PREVIEW SECTION ── */
+.preview-section {
+  background: var(--bg);
+  padding: 100px 2rem;
+}
+
+.preview-section .container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .preview-section .container { grid-template-columns: 1fr; gap: 48px; }
+}
+
+.preview-copy { }
+
+.preview-features {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.preview-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.preview-feature-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--accent-glow);
+  border: 1px solid rgba(0,232,200,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.preview-feature-text strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.preview-feature-text span {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Browser mockup */
+.browser-mockup {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1px var(--border),
+    0 24px 80px rgba(0,0,0,0.6),
+    0 0 60px rgba(0,232,200,0.05);
+}
+
+.browser-bar {
+  height: 38px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 8px;
+}
+
+.browser-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.browser-dot:nth-child(1) { background: #ff5f57; }
+.browser-dot:nth-child(2) { background: #febc2e; }
+.browser-dot:nth-child(3) { background: #28c840; }
+
+.browser-address {
+  flex: 1;
+  height: 22px;
+  background: var(--bg);
+  border-radius: 4px;
+  margin: 0 12px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 6px;
+}
+
+.browser-address-lock {
+  color: var(--accent);
+  font-size: 10px;
+}
+
+.browser-address-text {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.browser-screenshot {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ── OUTPUT CARDS ── */
+.outputs-section {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.outputs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px;
+  margin-top: 3rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.output-card {
+  padding: 32px 28px;
+  background: var(--surface-2);
+  position: relative;
+  transition: background 0.2s;
+}
+
+.output-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: transparent;
+  transition: background 0.2s;
+}
+
+.output-card:hover { background: var(--surface); }
+
+.output-card.primary::before { background: var(--accent); }
+.output-card.secondary::before { background: var(--accent-2); }
+.output-card.tertiary::before { background: var(--gold); }
+.output-card.quaternary::before { background: var(--muted); }
+
+.output-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.output-icon.cyan { background: rgba(0,232,200,0.12); color: var(--accent); }
+.output-icon.red { background: rgba(255,77,114,0.12); color: var(--accent-2); }
+.output-icon.gold { background: rgba(240,192,64,0.12); color: var(--gold); }
+.output-icon.grey { background: rgba(90,90,133,0.12); color: var(--muted); }
+
+.output-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.output-badge.always { background: rgba(0,232,200,0.12); color: var(--accent); }
+.output-badge.optional { background: rgba(90,90,133,0.12); color: var(--muted); }
+
+.output-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.output-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── WORKFLOW ── */
+.workflow-section {
+  background: var(--bg);
+}
+
+.workflow-grid {
+  margin-top: 3.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0;
+}
+
+.workflow-step {
+  padding: 32px;
+  border: 1px solid var(--border);
+  margin: -1px -1px 0 0;
+  position: relative;
+  transition: background 0.2s;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease, background 0.2s;
+}
+
+.workflow-step.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.workflow-step:hover { background: var(--surface); }
+
+.step-num {
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 300;
+  color: var(--border-bright);
+  line-height: 1;
+  position: absolute;
+  top: 16px;
+  right: 24px;
+}
+
+.step-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--accent-glow);
+  border: 1px solid rgba(0,232,200,0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  color: var(--accent);
+}
+
+.step-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.step-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── INSTALL SECTION ── */
+.install-section {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.install-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 80px;
+  align-items: start;
+  margin-top: 3rem;
+}
+
+@media (max-width: 900px) {
+  .install-layout { grid-template-columns: 1fr; gap: 48px; }
+}
+
+.install-tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.install-tab {
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.install-tab.active {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.install-tab:hover:not(.active) { color: var(--text); }
+
+.install-panel { display: none; }
+.install-panel.active { display: block; }
+
+.code-block {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.code-header {
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.code-lang {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.code-copy {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.code-copy:hover { color: var(--accent); }
+
+.code-content {
+  padding: 20px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text);
+  overflow-x: auto;
+}
+
+.code-content .comment { color: var(--muted); }
+.code-content .cmd { color: var(--accent); }
+.code-content .path { color: var(--gold); }
+.code-content .flag { color: var(--accent-2); }
+
+.install-note {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  padding-left: 1px;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 48px 2rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.footer-logo-icon {
+  width: 24px;
+  height: 24px;
+  background: var(--accent);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-meta {
+  font-size: 13px;
+  color: var(--dim);
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-link {
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer-link:hover { color: var(--text); }
+
+.footer-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--border);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays */
+.reveal:nth-child(1) { transition-delay: 0s; }
+.reveal:nth-child(2) { transition-delay: 0.1s; }
+.reveal:nth-child(3) { transition-delay: 0.2s; }
+.reveal:nth-child(4) { transition-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="10" width="2" height="4" fill="#000" rx="0.5"/>
+        <rect x="5" y="7" width="2" height="7" fill="#000" rx="0.5"/>
+        <rect x="8" y="4" width="2" height="10" fill="#000" rx="0.5"/>
+        <rect x="11" y="2" width="2" height="12" fill="#000" rx="0.5"/>
+        <path d="M10 2L13 2L13 5" stroke="#000" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="nav-logo-name">customer-review-analyst</span>
+  </a>
+  <div class="nav-right">
+    <a href="https://github.com/adrianwwwang/customer-review-analyst" target="_blank" class="gh-btn gh-btn-fork">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+      Fork
+    </a>
+    <a href="https://github.com/adrianwwwang/customer-review-analyst" target="_blank" class="gh-btn gh-btn-star">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Star
+    </a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    Open Source · MIT License
+  </div>
+
+  <div class="hero-name-wrapper">
+    <h1 class="hero-name-main">Customer Review<br>Analyst</h1>
+  </div>
+
+  <p class="hero-sub">
+    Fetch, analyze, and visualize customer reviews into a polished interactive report — in a single conversation.
+  </p>
+
+  <div class="hero-actions">
+    <a href="https://github.com/adrianwwwang/customer-review-analyst" target="_blank" class="btn-primary">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+      View on GitHub
+    </a>
+    <a href="#install" class="btn-secondary">
+      Quick install
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-value"><span class="accent">50+</span></div>
+      <div class="stat-label">Reviews / run</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="stat-value"><span class="accent">3</span></div>
+      <div class="stat-label">Output formats</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="stat-value"><span class="accent">1</span></div>
+      <div class="stat-label">Conversation</div>
+    </div>
+  </div>
+
+  <!-- ── PLATFORMS (in hero, visible without scrolling) ── -->
+  <div class="hero-platforms">
+    <div class="hero-platforms-label">Works with every major AI coding assistant</div>
+    <div class="hero-platforms-row">
+
+      <!-- Kiro -->
+      <div class="platform-item">
+        <div class="platform-icon">
+          <img src="https://kiro.dev/icon.svg?fe599162bb293ea0" alt="Kiro">
+        </div>
+        <span class="platform-name">Kiro</span>
+      </div>
+
+      <!-- OpenClaw -->
+      <div class="platform-item">
+        <div class="platform-icon">
+          <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/openclaw.png" alt="OpenClaw">
+        </div>
+        <span class="platform-name">OpenClaw</span>
+      </div>
+
+      <!-- Cursor -->
+      <div class="platform-item">
+        <div class="platform-icon">
+          <img src="https://cursor.com/marketing-static/icon-512x512.png" alt="Cursor">
+        </div>
+        <span class="platform-name">Cursor</span>
+      </div>
+
+      <!-- GitHub Copilot — white icon, needs dark bg -->
+      <div class="platform-item">
+        <div class="platform-icon" style="background:#1b1f23;">
+          <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/github-copilot-white-icon.png" alt="GitHub Copilot">
+        </div>
+        <span class="platform-name">GitHub Copilot</span>
+      </div>
+
+      <!-- Claude -->
+      <div class="platform-item">
+        <div class="platform-icon">
+          <img src="https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/dark/claude-color.png" alt="Claude">
+        </div>
+        <span class="platform-name">Claude</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── PREVIEW ── -->
+<section class="preview-section">
+  <div class="container">
+    <div class="preview-copy reveal">
+      <div class="section-eyebrow">Live output</div>
+      <h2 class="section-title">A full dashboard,<br><em>in one command</em></h2>
+      <p class="section-desc">
+        Give it any product review URL or name. In minutes, you get interactive trend charts, sentiment breakdowns, extracted complaint themes with verbatim quotes, and ranked action items.
+      </p>
+      <div class="preview-features">
+        <div class="preview-feature">
+          <div class="preview-feature-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="preview-feature-text">
+            <strong>Rating trend over time</strong>
+            <span>Monthly avg rating and review count as dual-axis line/bar chart</span>
+          </div>
+        </div>
+        <div class="preview-feature">
+          <div class="preview-feature-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <div class="preview-feature-text">
+            <strong>Sentiment analysis</strong>
+            <span>Positive / neutral / negative classification with trend over time</span>
+          </div>
+        </div>
+        <div class="preview-feature">
+          <div class="preview-feature-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="preview-feature-text">
+            <strong>Verbatim quotes &amp; complaint themes</strong>
+            <span>5–7 themes with 2–3 real customer quotes each, priority ranked</span>
+          </div>
+        </div>
+        <div class="preview-feature">
+          <div class="preview-feature-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2.2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div class="preview-feature-text">
+            <strong>Prioritized action items</strong>
+            <span>One concrete action per complaint theme, ordered by impact</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="transition-delay: 0.15s">
+      <div class="browser-mockup">
+        <div class="browser-bar">
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-address">
+            <span class="browser-address-lock">🔒</span>
+            <span class="browser-address-text">customer_review_report_tiktok_2026.html</span>
+          </div>
+        </div>
+        <img class="browser-screenshot" src="examples/tiktok_review_analysis.png" alt="TikTok Customer Review Analysis Dashboard — 154 reviews, 2.18 avg rating, 67.5% negative sentiment">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── OUTPUTS ── -->
+<section class="outputs-section">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-eyebrow">Deliverables</div>
+      <h2 class="section-title">Every format<br><em>you need</em></h2>
+    </div>
+    <div class="outputs-grid">
+      <div class="output-card primary reveal">
+        <div class="output-icon cyan">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div class="output-badge always">Always</div>
+        <div class="output-name">HTML Dashboard</div>
+        <div class="output-desc">Dark-theme, fully interactive single-file report with Chart.js visualizations. Zero dependencies to share.</div>
+      </div>
+      <div class="output-card secondary reveal">
+        <div class="output-icon red">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+        </div>
+        <div class="output-badge optional">Optional</div>
+        <div class="output-name">PowerPoint Slides</div>
+        <div class="output-desc">7-slide stakeholder-ready deck built with python-pptx. Charts embedded as images.</div>
+      </div>
+      <div class="output-card tertiary reveal">
+        <div class="output-icon gold">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <div class="output-badge optional">Optional</div>
+        <div class="output-name">PDF Report</div>
+        <div class="output-desc">Static, print-ready version of the dashboard via WeasyPrint. Perfect for distribution.</div>
+      </div>
+      <div class="output-card quaternary reveal">
+        <div class="output-icon grey">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <div class="output-badge optional">Optional</div>
+        <div class="output-name">Raw JSON</div>
+        <div class="output-desc">Saved review data for reuse, further analysis, or feeding into downstream tools.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WORKFLOW ── -->
+<section class="workflow-section">
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom: 0.5rem;">
+      <div class="section-eyebrow" style="justify-content:center;">
+        How it works
+      </div>
+      <h2 class="section-title" style="max-width:600px; margin:0 auto 1rem;">Six steps,<br><em>one conversation</em></h2>
+      <p class="section-desc" style="margin:0 auto; text-align:center;">
+        The skill orchestrates the AI through a structured workflow — no scripts to run, no dashboards to configure.
+      </p>
+    </div>
+
+    <div class="workflow-grid" style="margin-top: 3.5rem;">
+      <div class="workflow-step">
+        <span class="step-num">01</span>
+        <div class="step-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="step-title">Gather inputs</div>
+        <div class="step-desc">URL or product name, time range, desired output formats, and save location.</div>
+      </div>
+      <div class="workflow-step">
+        <span class="step-num">02</span>
+        <div class="step-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="step-title">Fetch review data</div>
+        <div class="step-desc">Paginates 50+ reviews from Trustpilot, Amazon, App Store, or Google Play.</div>
+      </div>
+      <div class="workflow-step">
+        <span class="step-num">03</span>
+        <div class="step-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="step-title">Analyze &amp; classify</div>
+        <div class="step-desc">Sentiment scoring, monthly aggregation, complaint theme extraction with quotes.</div>
+      </div>
+      <div class="workflow-step">
+        <span class="step-num">04</span>
+        <div class="step-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div class="step-title">Generate HTML</div>
+        <div class="step-desc">Runs generate_html.py to produce a self-contained interactive dashboard.</div>
+      </div>
+      <div class="workflow-step">
+        <span class="step-num">05</span>
+        <div class="step-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/></svg>
+        </div>
+        <div class="step-title">Optional outputs</div>
+        <div class="step-desc">Generates PowerPoint slides and/or a PDF report if requested.</div>
+      </div>
+      <div class="workflow-step">
+        <span class="step-num">06</span>
+        <div class="step-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div class="step-title">Deliver summary</div>
+        <div class="step-desc">File paths, sentiment split, top 3 complaints, and top 3 action items — inline.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INSTALL ── -->
+<section class="install-section" id="install">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-eyebrow">Installation</div>
+      <h2 class="section-title">Up in<br><em>seconds</em></h2>
+    </div>
+    <div class="install-layout">
+      <div class="reveal">
+        <p class="section-desc">Copy the skill to your AI assistant's skill directory, restart, and speak naturally.</p>
+        <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 12px;">
+          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--muted);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
+            Auto-detected on restart
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--muted);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
+            Works across all projects
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--muted);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
+            pip deps installed on demand
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--muted);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
+            Trigger with natural language
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay: 0.15s;">
+        <div class="install-tabs">
+          <button class="install-tab active" onclick="switchTab(this, 'claude')">Claude Code</button>
+          <button class="install-tab" onclick="switchTab(this, 'copilot')">Copilot</button>
+          <button class="install-tab" onclick="switchTab(this, 'cursor')">Cursor</button>
+          <button class="install-tab" onclick="switchTab(this, 'codex')">Codex</button>
+          <button class="install-tab" onclick="switchTab(this, 'kiro')">Kiro</button>
+        </div>
+
+        <div id="tab-claude" class="install-panel active">
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="code-copy" onclick="copyCode('claude-code')">copy</button>
+            </div>
+            <div class="code-content" id="claude-code"><span class="comment"># Clone the repository</span>
+<span class="cmd">git clone</span> https://github.com/adrianwwwang/customer-review-analyst.git
+
+<span class="comment"># Install the skill globally</span>
+<span class="cmd">cp</span> <span class="flag">-r</span> customer-review-analyst/skills/customer-review-analyst <span class="path">~/.claude/skills/</span></div>
+          </div>
+          <p class="install-note">Restart Claude Code — the skill is auto-detected in all projects.</p>
+        </div>
+
+        <div id="tab-copilot" class="install-panel">
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="code-copy" onclick="copyCode('copilot-code')">copy</button>
+            </div>
+            <div class="code-content" id="copilot-code"><span class="comment"># Option A — personal skill (all projects)</span>
+<span class="cmd">cp</span> <span class="flag">-r</span> customer-review-analyst/skills/customer-review-analyst <span class="path">~/.copilot/skills/</span>
+
+<span class="comment"># Option B — project-level skill</span>
+<span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.github/skills</span>
+<span class="cmd">cp</span> <span class="flag">-r</span> skills/customer-review-analyst <span class="path">.github/skills/</span>
+
+<span class="comment"># Option C — custom instructions (always-on)</span>
+<span class="cmd">cp</span> github-copilot/copilot-instructions.md <span class="path">.github/copilot-instructions.md</span></div>
+          </div>
+          <p class="install-note">Works in VS Code, Eclipse, Xcode, and JetBrains.</p>
+        </div>
+
+        <div id="tab-cursor" class="install-panel">
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="code-copy" onclick="copyCode('cursor-code')">copy</button>
+            </div>
+            <div class="code-content" id="cursor-code"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.cursor/rules</span>
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">.cursor/rules/customer-review-analyst.mdc</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/cursor/rules/customer-review-analyst.mdc</div>
+          </div>
+          <p class="install-note">Context-triggered — Cursor activates it automatically when your request matches.</p>
+        </div>
+
+        <div id="tab-codex" class="install-panel">
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="code-copy" onclick="copyCode('codex-code')">copy</button>
+            </div>
+            <div class="code-content" id="codex-code"><span class="comment"># Global install</span>
+<span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">~/.codex/skills/customer-review-analyst</span>
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">~/.codex/skills/customer-review-analyst/SKILL.md</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md</div>
+          </div>
+          <p class="install-note">Or use project-level install at <code style="font-family:var(--font-mono); font-size:12px; color:var(--accent)">.agents/skills/</code></p>
+        </div>
+
+        <div id="tab-kiro" class="install-panel">
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="code-copy" onclick="copyCode('kiro-code')">copy</button>
+            </div>
+            <div class="code-content" id="kiro-code"><span class="comment"># Steering file (always-on, recommended)</span>
+<span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.kiro/steering</span>
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">.kiro/steering/customer-review-analyst.md</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+
+<span class="comment"># Or as an agent skill (context-triggered)</span>
+<span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.kiro/skills/customer-review-analyst</span></div>
+          </div>
+          <p class="install-note">Steering files are always active; skills are context-triggered.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <a href="https://github.com/adrianwwwang/customer-review-analyst" target="_blank" class="footer-logo">
+        <div class="footer-logo-icon">
+          <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+            <rect x="2" y="10" width="2" height="4" fill="#000" rx="0.5"/>
+            <rect x="5" y="7" width="2" height="7" fill="#000" rx="0.5"/>
+            <rect x="8" y="4" width="2" height="10" fill="#000" rx="0.5"/>
+            <rect x="11" y="2" width="2" height="12" fill="#000" rx="0.5"/>
+          </svg>
+        </div>
+        customer-review-analyst
+      </a>
+      <span class="footer-meta">MIT License · adrianwwwang</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/adrianwwwang/customer-review-analyst" target="_blank" class="footer-link">GitHub</a>
+      <div class="footer-divider"></div>
+      <a href="https://github.com/adrianwwwang/customer-review-analyst/issues" target="_blank" class="footer-link">Issues</a>
+      <div class="footer-divider"></div>
+      <a href="https://github.com/adrianwwwang/customer-review-analyst/blob/main/LICENSE" target="_blank" class="footer-link">License</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Tab switching ──
+function switchTab(btn, id) {
+  document.querySelectorAll('.install-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.install-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+// ── Copy code ──
+function copyCode(id) {
+  const el = document.getElementById(id);
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = el.closest('.code-block').querySelector('.code-copy');
+    btn.textContent = 'copied!';
+    btn.style.color = 'var(--accent)';
+    setTimeout(() => { btn.textContent = 'copy'; btn.style.color = ''; }, 2000);
+  });
+}
+
+// ── Scroll reveal ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .workflow-step').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
