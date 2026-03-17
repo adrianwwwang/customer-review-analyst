@@ -127,6 +127,20 @@ cp -r customer-review-analyst/skills/customer-review-analyst your-project/.githu
 cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
 ```
 
+#### Eclipse
+
+**Custom instructions:**
+```bash
+cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
+```
+
+#### Xcode
+
+**Custom instructions:**
+```bash
+cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
+```
+
 #### JetBrains
 
 **Option A — Personal skill (available across all projects):**
