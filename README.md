@@ -129,12 +129,20 @@ cp customer-review-analyst/vscode/copilot-instructions.md your-project/.github/c
 
 #### JetBrains
 
-> Requires Copilot Business or Enterprise. An administrator must enable **Editor preview features** in the organization policy.
-
-1. Enable in **Settings → GitHub Copilot → Chat → Agent**
-2. Copy the skill to your personal skills directory:
+**Option A — Personal skill (available across all projects):**
 ```bash
 cp -r customer-review-analyst/skills/customer-review-analyst ~/.copilot/skills/
+```
+
+**Option B — Project skill (repo-specific):**
+```bash
+mkdir -p your-project/.github/skills
+cp -r customer-review-analyst/skills/customer-review-analyst your-project/.github/skills/
+```
+
+**Option C — Custom instructions (always-on, no skill system needed):**
+```bash
+cp customer-review-analyst/vscode/copilot-instructions.md your-project/.github/copilot-instructions.md
 ```
 
 ---
