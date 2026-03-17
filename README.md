@@ -1,5 +1,7 @@
 # Customer Review Analyst
 
+**[🌐 Product Page](https://adrianwwwang.github.io/customer-review-analyst/)**
+
 An [agent skill](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) that fetches, analyzes, and visualizes customer reviews into a polished, interactive report — in one conversation.
 
 Works with **Claude Code**, **GitHub Copilot**, **Cursor**, **Codex**, **Kiro**, **OpenClaw**, and any tool that supports the open `SKILL.md` standard.
