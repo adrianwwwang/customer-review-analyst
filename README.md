@@ -95,7 +95,7 @@ customer-review-analyst/
 
 ## Installation
 
-### <img src="assets/claude-light.png" height="20" valign="middle"> Claude
+### <img src="assets/claude-light.png" height="37" valign="middle"> Claude
 
 ```bash
 # Clone the repo
@@ -109,7 +109,7 @@ Restart Claude Code — the skill is auto-detected and available in all projects
 
 ---
 
-### <img src="assets/github-copilot-icon.png" height="20" valign="middle"> GitHub Copilot
+### <img src="assets/github-copilot-icon.png" height="37" valign="middle"> GitHub Copilot
 
 #### VS Code
 
@@ -163,7 +163,7 @@ cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.
 
 ---
 
-### <img src="assets/cursor.png" height="20" valign="middle"> Cursor
+### <img src="assets/cursor.png" height="37" valign="middle"> Cursor
 
 ```bash
 mkdir -p .cursor/rules
@@ -175,7 +175,7 @@ The rule is context-triggered — Cursor activates it automatically when your re
 
 ---
 
-### <img src="assets/codex-light.png" height="20" valign="middle"> Codex
+### <img src="assets/codex-light.png" height="37" valign="middle"> Codex
 
 **Global install (all projects):**
 ```bash
@@ -193,7 +193,7 @@ curl -o .agents/skills/customer-review-analyst/SKILL.md \
 
 ---
 
-### <img src="assets/kiro.svg" height="20" valign="middle"> Kiro
+### <img src="assets/kiro.svg" height="37" valign="middle"> Kiro
 
 **Option A — Steering file (always-on, recommended):**
 ```bash
@@ -211,7 +211,7 @@ curl -o .kiro/skills/customer-review-analyst/SKILL.md \
 
 ---
 
-### <img src="assets/openclaw.png" height="20" valign="middle"> OpenClaw
+### <img src="assets/openclaw.png" height="37" valign="middle"> OpenClaw
 
 **Global install (all projects):**
 ```bash
