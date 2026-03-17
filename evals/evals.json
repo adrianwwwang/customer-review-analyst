@@ -1,0 +1,69 @@
+{
+  "skill_name": "customer-review-analyst",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's the Amazon review page for the Anker portable charger: https://www.amazon.com/dp/B07S829LBX#averageCustomerReviewsAnchor. Can you analyze the customer reviews from the last 6 months? Just the HTML report is fine, no need to save the data.",
+      "expected_output": "Self-contained interactive HTML dashboard with: executive summary header, interactive time filter, 4 Chart.js charts (avg rating trend, review volume, rating segmentation stacked bar, sentiment trend), complaint themes with verbatim quotes, and prioritized action items.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "html-file-exists",
+          "description": "An .html file was saved to the outputs directory"
+        },
+        {
+          "name": "html-is-self-contained",
+          "description": "The HTML file loads Chart.js from CDN and contains all CSS inline — no missing external resources required to render"
+        },
+        {
+          "name": "html-has-four-charts",
+          "description": "HTML contains 4 distinct Chart.js canvas elements (avg rating trend, review volume bar, rating segmentation stacked bar, sentiment trend lines)"
+        },
+        {
+          "name": "html-has-complaint-section",
+          "description": "HTML contains a complaints or themes section with at least one verbatim customer quote"
+        },
+        {
+          "name": "html-has-action-items",
+          "description": "HTML contains a numbered action items section with priority indicators"
+        },
+        {
+          "name": "html-has-time-filter",
+          "description": "HTML includes a month dropdown or date range control that filters the trend charts"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I want a review analysis for the Bose QuietComfort 45 headphones. I don't have a specific URL. Please save the data as a JSON file and also generate slides along with the HTML.",
+      "expected_output": "Searches for and confirms a review page URL, fetches reviews, generates self-contained interactive HTML dashboard + .pptx slides, saves raw reviews as JSON file.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "html-file-exists",
+          "description": "An .html file was saved to the outputs directory"
+        },
+        {
+          "name": "pptx-file-exists",
+          "description": "A .pptx slides deck file was saved to the outputs directory"
+        },
+        {
+          "name": "json-data-saved",
+          "description": "A raw reviews .json file was saved to the outputs directory"
+        },
+        {
+          "name": "html-has-four-charts",
+          "description": "HTML contains 4 distinct Chart.js canvas elements"
+        },
+        {
+          "name": "slides-has-multiple-slides",
+          "description": "The .pptx file contains at least 5 slides"
+        },
+        {
+          "name": "html-has-complaint-section",
+          "description": "HTML contains complaint themes with at least one verbatim customer quote"
+        }
+      ]
+    }
+  ]
+}

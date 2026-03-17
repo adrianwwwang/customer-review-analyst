@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Generated outputs (not committed — users generate their own)
+*.html
+*.pptx
+*.pdf
+analysis_results.json
+reviews_*.json
+
+# But keep the example outputs
+!examples/**/*.json
+!examples/**/*.html
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude project config (machine-specific)
+.claude/
