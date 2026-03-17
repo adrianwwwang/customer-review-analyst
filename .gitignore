@@ -40,3 +40,5 @@ reviews_*.json
 
 # Claude project config (machine-specific)
 .claude/
+
+# Note: .claude-plugin/ is intentionally committed (marketplace metadata)

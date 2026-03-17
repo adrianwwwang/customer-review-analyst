@@ -1,8 +1,10 @@
 # Customer Review Analyst
 
-A [Claude Code](https://claude.ai/code) skill that fetches, analyzes, and visualizes customer reviews into a polished, interactive report — in one conversation.
+An [agent skill](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) that fetches, analyzes, and visualizes customer reviews into a polished, interactive report — in one conversation.
 
-Give it a product review URL or just a product name, and it produces a self-contained HTML dashboard with trend charts, sentiment analysis, top complaint themes, verbatim quotes, and prioritized action items. Optionally generates PowerPoint slides and a PDF report too.
+Works with **Claude Code**, **GitHub Copilot** (VS Code Insiders, JetBrains, CLI), and any tool that supports the open `SKILL.md` standard.
+
+Give it a product review URL or just a product name, and it produces a self-contained HTML dashboard with trend charts, sentiment analysis, top complaint themes, verbatim quotes, and prioritized action items. Optionally generates PowerPoint slides and a PDF report.
 
 ---
 
@@ -15,7 +17,7 @@ Give it a product review URL or just a product name, and it produces a self-cont
 | **PDF report** | Static version of the dashboard | Optional |
 | **Raw JSON** | Saved review data for future reuse | Optional |
 
-**Example:** TikTok analysis — 154 reviews · Dec 2025–Mar 2026 · 2.18 avg rating · 67.5% negative sentiment
+**Example output** — TikTok analysis · 154 reviews · Dec 2025–Mar 2026 · 2.18 avg rating · 67.5% negative sentiment:
 
 ![TikTok Customer Review Analysis Dashboard](examples/tiktok_review_analysis.png)
 
@@ -23,7 +25,7 @@ Give it a product review URL or just a product name, and it produces a self-cont
 
 ## Architecture
 
-The skill is a single `SKILL.md` manifest that orchestrates Claude through a 6-step workflow:
+The skill is a single `SKILL.md` manifest that orchestrates the AI through a 6-step workflow:
 
 ```
 User request
@@ -38,7 +40,7 @@ Step 2 ── Get review data
           Paginate to collect 50+ reviews · filter by time range · optionally save raw JSON
     │
     ▼
-Step 3 ── Analyze (Python script written + run by Claude)
+Step 3 ── Analyze (Python script written + run by the AI)
           ├── Sentiment classification  (star rating + text override)
           ├── Monthly aggregation       (avg rating, counts, sentiment %)
           ├── Complaint theme extraction (5–7 themes, 2–3 verbatim quotes each)
@@ -61,16 +63,21 @@ Step 6 ── Summary
 
 ```
 customer-review-analyst/
-├── SKILL.md                    # Skill definition — the orchestration instructions for Claude
-├── scripts/
-│   └── generate_html.py        # HTML dashboard generator (~750 lines, Chart.js, dark theme)
-├── evals/
-│   └── evals.json              # Evaluation test cases
-└── examples/
-    └── tik-tok-analysis        # Sample output dashboard for TikTok reviews
+├── skills/
+│   └── customer-review-analyst/
+│       ├── SKILL.md                    # Skill definition — orchestration instructions
+│       └── scripts/
+│           └── generate_html.py        # HTML dashboard generator (~750 lines, Chart.js)
+├── vscode/
+│   └── copilot-instructions.md         # Drop into .github/copilot-instructions.md
+├── .claude-plugin/
+│   ├── plugin.json                     # Claude Code marketplace metadata
+│   └── marketplace.json               # Claude Code marketplace registry
+└── evals/
+    └── evals.json                      # Evaluation test cases
 ```
 
-**Runtime dependencies** (Claude installs these on demand via `pip`):
+**Runtime dependencies** (the AI installs these on demand via `pip`):
 
 | Package | Purpose | Required? |
 |---------|---------|-----------|
@@ -78,70 +85,94 @@ customer-review-analyst/
 | `python-pptx` | PowerPoint generation | Only for `.pptx` output |
 | `matplotlib` | Chart images in slides | Only for `.pptx` output |
 | `weasyprint` | HTML → PDF | Only for `.pdf` output |
-| `pdfkit` | Alternative HTML → PDF | Only for `.pdf` output |
 
 ---
 
 ## Installation
 
-### Option A — Claude Code skills directory (manual, recommended now)
-
-1. Clone this repo:
-   ```bash
-   git clone https://github.com/adrianwwwang/customer-review-analyst.git
-   ```
-
-2. Copy the skill into Claude Code's skills directory:
-   ```bash
-   mkdir -p ~/.claude/skills/customer-review-analyst
-
-   cp customer-review-analyst/SKILL.md ~/.claude/skills/customer-review-analyst/
-   cp -r customer-review-analyst/scripts ~/.claude/skills/customer-review-analyst/
-   ```
-
-3. Restart Claude Code. The skill will be auto-detected and available in all projects.
-
-4. *(Optional)* Pre-install Python dependencies so Claude doesn't need to install them at runtime:
-   ```bash
-   pip install python-pptx matplotlib    # for .pptx slides
-   pip install weasyprint                # for .pdf report
-   ```
-
-### Option B — Claude Code marketplace
-
-> **Note:** The Claude Code skills marketplace is actively evolving. Check the [Claude Code documentation](https://docs.anthropic.com/en/docs/claude-code) for the latest installation commands as the ecosystem matures.
-
-When CLI-based skill installation is available, it will likely look like:
+### Claude Code
 
 ```bash
-claude skill install github:adrianwwwang/customer-review-analyst
-# or
-claude plugin install adrianwwwang/customer-review-analyst
+# Clone the repo
+git clone https://github.com/adrianwwwang/customer-review-analyst.git
+
+# Copy the skill to your Claude skills directory
+cp -r customer-review-analyst/skills/customer-review-analyst ~/.claude/skills/
 ```
 
-Watch this repo for updates as the official marketplace launches.
+Restart Claude Code — the skill is auto-detected and available in all projects.
 
-### Verify installation
+---
 
-Open a new Claude Code conversation and try:
+### GitHub Copilot CLI
+
+```bash
+# Clone the repo
+git clone https://github.com/adrianwwwang/customer-review-analyst.git
+
+# Copy the skill to your Copilot skills directory
+cp -r customer-review-analyst/skills/customer-review-analyst ~/.copilot/skills/
 ```
-Analyze customer reviews for https://www.trustpilot.com/review/notion.so
+
+Then in the CLI, reload skills:
+```bash
+/skills reload
+/skills list    # verify customer-review-analyst appears
 ```
 
-Claude should trigger the skill and ask for your inputs.
+---
+
+### GitHub Copilot in VS Code (Insiders)
+
+> **Note:** Copilot agent skills in VS Code currently require [VS Code Insiders](https://code.visualstudio.com/insiders/). Stable VS Code support is coming.
+
+**Option A — Personal skill (available across all projects):**
+```bash
+cp -r customer-review-analyst/skills/customer-review-analyst ~/.copilot/skills/
+```
+
+**Option B — Project skill (repo-specific):**
+```bash
+mkdir -p your-project/.github/skills
+cp -r customer-review-analyst/skills/customer-review-analyst your-project/.github/skills/
+```
+
+**Option C — Custom instructions (always-on, no skill system needed):**
+
+Copy `vscode/copilot-instructions.md` into your project:
+```bash
+cp customer-review-analyst/vscode/copilot-instructions.md your-project/.github/copilot-instructions.md
+```
+
+---
+
+### GitHub Copilot in JetBrains
+
+> **Note:** Requires Copilot Business or Enterprise. An administrator must enable **Editor preview features** in the organization policy.
+
+1. Enable in **Settings → GitHub Copilot → Chat → Agent**
+2. Copy the skill to your personal skills directory:
+```bash
+cp -r customer-review-analyst/skills/customer-review-analyst ~/.copilot/skills/
+```
+
+---
+
+### Is there a difference between VS Code and Copilot CLI?
+
+No — the **exact same `SKILL.md` file and install directory** works for both. The only difference is the reload command (`/skills reload` in CLI; VS Code picks up changes automatically).
 
 ---
 
 ## Usage
 
-Once installed, speak to Claude naturally. The skill triggers on phrases like:
+Once installed, speak naturally. Trigger phrases:
 
 - `"Analyze reviews for [product name or URL]"`
 - `"What are customers saying about [product]?"`
 - `"Give me a review dashboard for [URL]"`
 - `"Summarize customer complaints for [product]"`
 - `"Product feedback summary for [URL]"`
-- `"Review analysis of [product]"`
 
 ### Example prompts
 
@@ -155,14 +186,9 @@ What are customers saying about Bose QuietComfort 45 headphones?
 Save the data and also generate slides.
 ```
 
-```
-Load my existing review data at ~/data/reviews.json and generate a full report
-with HTML, slides, and PDF for the last 3 months.
-```
+### What the AI will ask you
 
-### What Claude will ask you
-
-Before starting, Claude gathers **5 inputs** up front:
+Before starting, it gathers **5 inputs** up front:
 
 | # | Question | Default |
 |---|----------|---------|
@@ -180,55 +206,30 @@ Before starting, Claude gathers **5 inputs** up front:
 ├── customer_review_slides_[product]_[date].pptx    ← if requested
 ├── customer_review_report_[product]_[date].pdf     ← if requested
 ├── reviews_[product]_[date].json                   ← if "save data" chosen
-├── analysis_results.json                           ← intermediate analysis data
+├── analysis_results.json
 └── scripts/
     ├── generate_html.py
     ├── analyze_reviews.py
-    └── generate_slides.py                          ← if PPTX requested
+    └── generate_slides.py
 ```
 
 ---
 
 ## Supported review sources
 
-The skill uses `WebFetch` to scrape reviews. Works best with:
-
+Works best with:
 - **Trustpilot** — `trustpilot.com/review/[company-slug]`
 - **Amazon** — product pages with `#customerReviews` anchor
 - **Google Play Store** — may fall back to Trustpilot for JS-heavy pages
 - **Apple App Store** — via direct app page URL
 
-If a site blocks scraping, Claude will suggest alternative platforms for the same product.
-
-You can also **load previously saved review data** from a JSON file — useful for re-running analysis with different time filters or output formats without re-fetching.
-
----
-
-## Dashboard design
-
-The HTML output is a polished dark-theme single-page dashboard:
-
-- **Header** — gradient title, source URL, period badge, top-line stats
-- **Sticky filter bar** — month dropdown that filters all charts simultaneously
-- **KPI cards** — avg rating · negative % · neutral % · positive % · top complaint
-- **Executive summary** — 1–2 sentence synthesis of key numbers
-- **4 trend charts** — avg rating line · review volume bar · rating segmentation stacked bar · sentiment trend lines
-- **Monthly data table** — sortable with sentiment bars and rating breakdown
-- **Deep analysis** — sentiment donut · rating distribution donut · complaints bar chart
-- **Key insights** — icon cards with representative quotes
-- **Action items** — numbered list with High / Medium / Low priority pills
-
-Color palette: `#0a0e1a` background · `#f97316→#fbbf24` orange/amber accents · Chart.js for all charts.
+If a site blocks scraping, the AI will suggest alternative platforms for the same product.
 
 ---
 
 ## Contributing
 
-Pull requests welcome. For major changes, please open an issue first to discuss what you'd like to change.
-
-### Running evals
-
-The `evals/evals.json` file contains test cases for validating the skill output. Run them using the [Claude Code evals framework](https://docs.anthropic.com/en/docs/claude-code/evals).
+Pull requests welcome. For major changes, please open an issue first.
 
 ---
 

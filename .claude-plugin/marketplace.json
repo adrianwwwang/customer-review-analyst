@@ -1,0 +1,20 @@
+{
+  "name": "customer-review-analyst",
+  "description": "Analyzes customer reviews for any product and produces a rich, interactive HTML dashboard, PowerPoint slides, and PDF report.",
+  "owner": {
+    "name": "adrianwwwang",
+    "url": "https://github.com/adrianwwwang"
+  },
+  "plugins": [
+    {
+      "name": "customer-review-analyst",
+      "description": "Fetches, analyzes, and visualizes customer reviews into a polished dark-theme interactive dashboard with Chart.js charts, complaint themes, verbatim quotes, and prioritized action items. Supports HTML, PPTX, and PDF output.",
+      "version": "1.0.0",
+      "source": "./",
+      "author": {
+        "name": "adrianwwwang",
+        "url": "https://github.com/adrianwwwang"
+      }
+    }
+  ]
+}

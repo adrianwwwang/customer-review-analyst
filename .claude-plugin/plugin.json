@@ -1,0 +1,21 @@
+{
+    "name": "customer-review-analyst",
+    "version": "1.0.0",
+    "description": "Analyzes customer reviews for any product and produces a rich, interactive HTML dashboard, PowerPoint slides, and PDF report with sentiment analysis, complaint themes, and action items.",
+    "author": {
+        "name": "adrianwwwang",
+        "url": "https://github.com/adrianwwwang"
+    },
+    "homepage": "https://github.com/adrianwwwang/customer-review-analyst",
+    "repository": "https://github.com/adrianwwwang/customer-review-analyst",
+    "license": "MIT",
+    "keywords": [
+        "customer-review",
+        "sentiment-analysis",
+        "product-analysis",
+        "review-dashboard",
+        "data-visualization",
+        "html-report",
+        "chart-js"
+    ]
+}
