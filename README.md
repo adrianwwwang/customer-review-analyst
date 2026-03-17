@@ -2,7 +2,7 @@
 
 An [agent skill](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) that fetches, analyzes, and visualizes customer reviews into a polished, interactive report — in one conversation.
 
-Works with **Claude Code**, **GitHub Copilot** (VS Code Insiders, JetBrains, CLI), and any tool that supports the open `SKILL.md` standard.
+Works with **Claude Code**, **GitHub Copilot**, **Cursor**, **Codex**, **Kiro**, **OpenClaw**, and any tool that supports the open `SKILL.md` standard.
 
 Give it a product review URL or just a product name, and it produces a self-contained HTML dashboard with trend charts, sentiment analysis, top complaint themes, verbatim quotes, and prioritized action items. Optionally generates PowerPoint slides and a PDF report.
 
@@ -68,6 +68,9 @@ customer-review-analyst/
 │       ├── SKILL.md                    # Skill definition — orchestration instructions
 │       └── scripts/
 │           └── generate_html.py        # HTML dashboard generator (~750 lines, Chart.js)
+├── cursor/
+│   └── rules/
+│       └── customer-review-analyst.mdc # Cursor rules file
 ├── vscode/
 │   └── copilot-instructions.md         # Drop into .github/copilot-instructions.md
 ├── .claude-plugin/
@@ -90,7 +93,7 @@ customer-review-analyst/
 
 ## Installation
 
-### Claude Code
+### Claude
 
 ```bash
 # Clone the repo
@@ -104,27 +107,9 @@ Restart Claude Code — the skill is auto-detected and available in all projects
 
 ---
 
-### GitHub Copilot CLI
+### GitHub Copilot
 
-```bash
-# Clone the repo
-git clone https://github.com/adrianwwwang/customer-review-analyst.git
-
-# Copy the skill to your Copilot skills directory
-cp -r customer-review-analyst/skills/customer-review-analyst ~/.copilot/skills/
-```
-
-Then in the CLI, reload skills:
-```bash
-/skills reload
-/skills list    # verify customer-review-analyst appears
-```
-
----
-
-### GitHub Copilot in VS Code (Insiders)
-
-> **Note:** Copilot agent skills in VS Code currently require [VS Code Insiders](https://code.visualstudio.com/insiders/). Stable VS Code support is coming.
+#### VS Code
 
 **Option A — Personal skill (available across all projects):**
 ```bash
@@ -138,17 +123,13 @@ cp -r customer-review-analyst/skills/customer-review-analyst your-project/.githu
 ```
 
 **Option C — Custom instructions (always-on, no skill system needed):**
-
-Copy `vscode/copilot-instructions.md` into your project:
 ```bash
 cp customer-review-analyst/vscode/copilot-instructions.md your-project/.github/copilot-instructions.md
 ```
 
----
+#### JetBrains
 
-### GitHub Copilot in JetBrains
-
-> **Note:** Requires Copilot Business or Enterprise. An administrator must enable **Editor preview features** in the organization policy.
+> Requires Copilot Business or Enterprise. An administrator must enable **Editor preview features** in the organization policy.
 
 1. Enable in **Settings → GitHub Copilot → Chat → Agent**
 2. Copy the skill to your personal skills directory:
@@ -158,9 +139,69 @@ cp -r customer-review-analyst/skills/customer-review-analyst ~/.copilot/skills/
 
 ---
 
-### Is there a difference between VS Code and Copilot CLI?
+### Cursor
 
-No — the **exact same `SKILL.md` file and install directory** works for both. The only difference is the reload command (`/skills reload` in CLI; VS Code picks up changes automatically).
+```bash
+mkdir -p .cursor/rules
+curl -o .cursor/rules/customer-review-analyst.mdc \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/cursor/rules/customer-review-analyst.mdc
+```
+
+The rule is context-triggered — Cursor activates it automatically when your request matches the skill description.
+
+---
+
+### Codex
+
+**Global install (all projects):**
+```bash
+mkdir -p ~/.codex/skills/customer-review-analyst
+curl -o ~/.codex/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+```
+
+**Project-level install:**
+```bash
+mkdir -p .agents/skills/customer-review-analyst
+curl -o .agents/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+```
+
+---
+
+### Kiro
+
+**Option A — Steering file (always-on, recommended):**
+```bash
+mkdir -p .kiro/steering
+curl -o .kiro/steering/customer-review-analyst.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+```
+
+**Option B — Agent Skill (context-triggered):**
+```bash
+mkdir -p .kiro/skills/customer-review-analyst
+curl -o .kiro/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+```
+
+---
+
+### OpenClaw
+
+**Global install (all projects):**
+```bash
+mkdir -p ~/.openclaw/skills/customer-review-analyst
+curl -o ~/.openclaw/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+```
+
+**Project-level install:**
+```bash
+mkdir -p skills/customer-review-analyst
+curl -o skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+```
 
 ---
 
