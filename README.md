@@ -71,7 +71,7 @@ customer-review-analyst/
 ├── cursor/
 │   └── rules/
 │       └── customer-review-analyst.mdc # Cursor rules file
-├── vscode/
+├── github-copilot/
 │   └── copilot-instructions.md         # Drop into .github/copilot-instructions.md
 ├── .claude-plugin/
 │   ├── plugin.json                     # Claude Code marketplace metadata
@@ -124,7 +124,7 @@ cp -r customer-review-analyst/skills/customer-review-analyst your-project/.githu
 
 **Option C — Custom instructions (always-on, no skill system needed):**
 ```bash
-cp customer-review-analyst/vscode/copilot-instructions.md your-project/.github/copilot-instructions.md
+cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
 ```
 
 #### JetBrains
@@ -142,7 +142,7 @@ cp -r customer-review-analyst/skills/customer-review-analyst your-project/.githu
 
 **Option C — Custom instructions (always-on, no skill system needed):**
 ```bash
-cp customer-review-analyst/vscode/copilot-instructions.md your-project/.github/copilot-instructions.md
+cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
 ```
 
 ---
