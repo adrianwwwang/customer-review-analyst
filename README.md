@@ -15,7 +15,9 @@ Give it a product review URL or just a product name, and it produces a self-cont
 | **PDF report** | Static version of the dashboard | Optional |
 | **Raw JSON** | Saved review data for future reuse | Optional |
 
-**Example:** [TikTok analysis](examples/tiktok/) — 154 reviews · Dec 2025–Mar 2026 · 2.18 avg rating · 67.5% negative sentiment
+**Example:** TikTok analysis — 154 reviews · Dec 2025–Mar 2026 · 2.18 avg rating · 67.5% negative sentiment
+
+![TikTok Customer Review Analysis Dashboard](examples/tiktok_review_analysis.png)
 
 ---
 
@@ -65,9 +67,7 @@ customer-review-analyst/
 ├── evals/
 │   └── evals.json              # Evaluation test cases
 └── examples/
-    └── tiktok/
-        ├── analysis_results.json   # Sample structured analysis output
-        └── reviews_sample.json     # Sample raw review data (154 reviews, names anonymized)
+    └── tik-tok-analysis        # Sample output dashboard for TikTok reviews
 ```
 
 **Runtime dependencies** (Claude installs these on demand via `pip`):

@@ -28,9 +28,9 @@ env/
 analysis_results.json
 reviews_*.json
 
-# But keep the example outputs
-!examples/**/*.json
-!examples/**/*.html
+# But keep example screenshots
+!examples/*.png
+
 
 # IDE
 .vscode/
