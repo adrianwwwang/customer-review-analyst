@@ -64,17 +64,20 @@ Step 5 ── Summary
 
 **Global skill (available across all projects):**
 ```bash
-git clone https://github.com/adrianwwwang/customer-review-analyst.git /tmp/cra
-cp -r /tmp/cra/skills/customer-review-analyst ~/.claude/skills/
-rm -rf /tmp/cra
+mkdir -p ~/.claude/skills/customer-review-analyst/scripts
+curl -o ~/.claude/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+curl -o ~/.claude/skills/customer-review-analyst/scripts/generate_html.py \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py
 ```
 
 **Project skill (current repo only):**
 ```bash
-git clone https://github.com/adrianwwwang/customer-review-analyst.git /tmp/cra
-mkdir -p .claude/skills
-cp -r /tmp/cra/skills/customer-review-analyst .claude/skills/
-rm -rf /tmp/cra
+mkdir -p .claude/skills/customer-review-analyst/scripts
+curl -o .claude/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+curl -o .claude/skills/customer-review-analyst/scripts/generate_html.py \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py
 ```
 
 Restart Claude Code — the skill is auto-detected and available in all projects.
