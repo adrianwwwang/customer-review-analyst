@@ -781,6 +781,24 @@ section {
   line-height: 1.6;
 }
 
+/* ── HOW TO SECTION ── */
+.howto-section {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+
+.howto-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-top: 3rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .howto-layout { grid-template-columns: 1fr; gap: 48px; }
+}
+
 /* ── INSTALL SECTION ── */
 .install-section {
   background: var(--surface);
@@ -1205,25 +1223,9 @@ footer {
         <div class="output-icon red">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
         </div>
-        <div class="output-badge optional">Optional</div>
+        <div class="output-badge always">Always</div>
         <div class="output-name">PowerPoint Slides</div>
         <div class="output-desc">7-slide stakeholder-ready deck built with python-pptx. Charts embedded as images.</div>
-      </div>
-      <div class="output-card tertiary reveal">
-        <div class="output-icon gold">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        </div>
-        <div class="output-badge optional">Optional</div>
-        <div class="output-name">PDF Report</div>
-        <div class="output-desc">Static, print-ready version of the dashboard via WeasyPrint. Perfect for distribution.</div>
-      </div>
-      <div class="output-card quaternary reveal">
-        <div class="output-icon grey">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-        </div>
-        <div class="output-badge optional">Optional</div>
-        <div class="output-name">Raw JSON</div>
-        <div class="output-desc">Saved review data for reuse, further analysis, or feeding into downstream tools.</div>
       </div>
     </div>
   </div>
@@ -1417,6 +1419,52 @@ footer {
           </div>
           <p class="install-note">Steering files are always active; skills are context-triggered.</p>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW TO ── -->
+<section class="howto-section" id="how-to">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-eyebrow">Usage</div>
+      <h2 class="section-title">One command.<br><em>Full report.</em></h2>
+    </div>
+    <div class="howto-layout">
+      <div class="reveal">
+        <p class="section-desc">Open your AI editor chat and type the skill name followed by any review page URL. That's the entire workflow.</p>
+        <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 12px;">
+          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--muted);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
+            Last 6 months of reviews fetched automatically
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--muted);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
+            HTML dashboard + slides saved to current folder
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--muted);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
+            No further questions asked
+          </div>
+        </div>
+        <div style="margin-top: 2rem;">
+          <a href="#install" class="btn-secondary">
+            Not installed yet? Quick install
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay: 0.15s;">
+        <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Paste your review page URL after the skill name:</p>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">chat</span>
+            <button class="code-copy" onclick="copyCode('howto-cmd')">copy</button>
+          </div>
+          <div class="code-content" id="howto-cmd"><span class="cmd">/customer-review-analyst</span> https://www.trustpilot.com/review/tiktok.com</div>
+        </div>
+        <p class="install-note">Works on Trustpilot, Amazon, Google Play, App Store, and more. If no URL is provided, the skill will prompt you for one.</p>
       </div>
     </div>
   </div>
