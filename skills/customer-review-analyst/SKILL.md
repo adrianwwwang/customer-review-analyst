@@ -137,6 +137,18 @@ pip install selenium webdriver-manager
 **Method 5 — `WebSearch` fallback**
 If all direct fetches fail, use `WebSearch` to find an alternative review platform for the same product (e.g., if the brand site is blocked, search for it on Trustpilot, G2, or Amazon) and restart the fetch pipeline from Method 1 with the new URL.
 
+### Fetch volume limit
+
+**At every 1,000 reviews collected, check the running total.** When it crosses **5,000 reviews**, pause immediately and ask:
+
+> Fetched **{n} reviews** so far — this is a large dataset.
+>
+> How would you like to proceed?
+> - **A) Stop here** — analyze the {n} reviews already collected (covers the most recent data)
+> - **B) Keep going** — increase parallel threads to `max_workers=10` and continue fetching
+
+Wait for the user's reply before continuing. If the user picks **B**, update the thread pool and resume from the last fetched page. If the user picks **A** (or gives no reply within the same turn), proceed to analysis with what has been collected.
+
 ### After fetching
 
 - Deduplicate by (date + rating + first 80 chars of text).
