@@ -1326,6 +1326,7 @@ footer {
       </div>
 
       <div class="reveal" style="transition-delay: 0.15s;">
+        <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Open your terminal, then run the commands below.</p>
         <div class="install-tabs">
           <button class="install-tab active" onclick="switchTab(this, 'claude')">Claude Code</button>
           <button class="install-tab" onclick="switchTab(this, 'copilot')">Copilot</button>
@@ -1355,9 +1356,11 @@ footer {
               <span class="code-lang">bash</span>
               <button class="code-copy" onclick="copyCode('copilot-code')">copy</button>
             </div>
-            <div class="code-content" id="copilot-code"><span class="cmd">cp</span> <span class="flag">-r</span> customer-review-analyst/skills/customer-review-analyst <span class="path">~/.copilot/skills/</span></div>
+            <div class="code-content" id="copilot-code"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">~/.copilot/skills/customer-review-analyst</span>
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">~/.copilot/skills/customer-review-analyst/SKILL.md</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md</div>
           </div>
-          <p class="install-note">Works in VS Code, Eclipse, Xcode, and JetBrains.</p>
+          <p class="install-note">Works in VS Code with GitHub Copilot Chat.</p>
         </div>
 
         <div id="tab-cursor" class="install-panel">
