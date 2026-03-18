@@ -124,11 +124,6 @@ mkdir -p your-project/.github/skills
 cp -r customer-review-analyst/skills/customer-review-analyst your-project/.github/skills/
 ```
 
-**Option C — Custom instructions (always-on, no skill system needed):**
-```bash
-cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
-```
-
 #### <img src="assets/jetbrains.png" height="20" valign="middle"> JetBrains
 
 **Option A — Personal skill (available across all projects):**
@@ -140,11 +135,6 @@ cp -r customer-review-analyst/skills/customer-review-analyst ~/.copilot/skills/
 ```bash
 mkdir -p your-project/.github/skills
 cp -r customer-review-analyst/skills/customer-review-analyst your-project/.github/skills/
-```
-
-**Option C — Custom instructions (always-on, no skill system needed):**
-```bash
-cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
 ```
 
 ---
