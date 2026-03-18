@@ -62,19 +62,28 @@ Step 5 ── Summary
 
 ### <img src="assets/claude-light.png" height="37" valign="middle"> Claude
 
+**Global skill (available across all projects):**
 ```bash
-# Clone the repo
-git clone https://github.com/adrianwwwang/customer-review-analyst.git
+mkdir -p ~/.claude/skills/customer-review-analyst
+curl -o ~/.claude/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+```
 
-# Copy the skill to your Claude skills directory
-cp -r customer-review-analyst/skills/customer-review-analyst ~/.claude/skills/
+**Project skill (current repo only):**
+```bash
+mkdir -p .claude/skills/customer-review-analyst
+curl -o .claude/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
 ```
 
 Restart Claude Code — the skill is auto-detected and available in all projects.
 
 **Uninstall:**
 ```bash
+# Global
 rm -rf ~/.claude/skills/customer-review-analyst
+# Project
+rm -rf .claude/skills/customer-review-analyst
 ```
 
 ---

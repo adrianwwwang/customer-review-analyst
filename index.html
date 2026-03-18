@@ -1261,6 +1261,52 @@ footer {
   </div>
 </section>
 
+<!-- ── HOW TO ── -->
+<section class="howto-section" id="how-to">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-eyebrow">Usage</div>
+      <h2 class="section-title">One command.<br><em>Full report.</em></h2>
+    </div>
+    <div class="howto-layout">
+      <div class="reveal">
+        <p class="section-desc">Open your AI editor chat and type the skill name followed by any review page URL. That's the entire workflow.</p>
+        <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 12px;">
+          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--muted);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
+            Last 6 months of reviews fetched automatically
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--muted);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
+            HTML dashboard saved to current folder
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--muted);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
+            No further questions asked
+          </div>
+        </div>
+        <div style="margin-top: 2rem;">
+          <a href="#install" class="btn-secondary">
+            Not installed yet? Quick install
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay: 0.15s;">
+        <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Paste your review page URL after the skill name:</p>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">chat</span>
+            <button class="code-copy" onclick="copyCode('howto-cmd')">copy</button>
+          </div>
+          <div class="code-content" id="howto-cmd"><span class="cmd">/customer-review-analyst</span> https://www.trustpilot.com/review/tiktok.com</div>
+        </div>
+        <p class="install-note">Works on Trustpilot, Amazon, Google Play, App Store, and more. If no URL is provided, the skill will prompt you for one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── INSTALL ── -->
 <section class="install-section" id="install">
   <div class="container">
@@ -1302,18 +1348,27 @@ footer {
         </div>
 
         <div id="tab-claude" class="install-panel active">
+          <p class="install-note" style="margin-bottom:10px;font-weight:600;">Global skill (all projects):</p>
           <div class="code-block">
             <div class="code-header">
               <span class="code-lang">bash</span>
-              <button class="code-copy" onclick="copyCode('claude-code')">copy</button>
+              <button class="code-copy" onclick="copyCode('claude-code-global')">copy</button>
             </div>
-            <div class="code-content" id="claude-code"><span class="comment"># Clone the repository</span>
-<span class="cmd">git clone</span> https://github.com/adrianwwwang/customer-review-analyst.git
-
-<span class="comment"># Install the skill globally</span>
-<span class="cmd">cp</span> <span class="flag">-r</span> customer-review-analyst/skills/customer-review-analyst <span class="path">~/.claude/skills/</span></div>
+            <div class="code-content" id="claude-code-global"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">~/.claude/skills/customer-review-analyst</span>
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">~/.claude/skills/customer-review-analyst/SKILL.md</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md</div>
           </div>
-          <p class="install-note">Restart Claude Code — the skill is auto-detected in all projects.</p>
+          <p class="install-note" style="margin-top:14px;margin-bottom:10px;font-weight:600;">Project skill (current repo only):</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="code-copy" onclick="copyCode('claude-code-project')">copy</button>
+            </div>
+            <div class="code-content" id="claude-code-project"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.claude/skills/customer-review-analyst</span>
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">.claude/skills/customer-review-analyst/SKILL.md</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md</div>
+          </div>
+          <p class="install-note" style="margin-top:12px;">Restart Claude Code — the skill is auto-detected in all projects.</p>
         </div>
 
         <div id="tab-copilot" class="install-panel">
@@ -1383,52 +1438,6 @@ footer {
           </div>
           <p class="install-note">Steering files are always active; skills are context-triggered.</p>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── HOW TO ── -->
-<section class="howto-section" id="how-to">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-eyebrow">Usage</div>
-      <h2 class="section-title">One command.<br><em>Full report.</em></h2>
-    </div>
-    <div class="howto-layout">
-      <div class="reveal">
-        <p class="section-desc">Open your AI editor chat and type the skill name followed by any review page URL. That's the entire workflow.</p>
-        <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 12px;">
-          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--muted);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
-            Last 6 months of reviews fetched automatically
-          </div>
-          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--muted);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
-            HTML dashboard saved to current folder
-          </div>
-          <div style="display:flex; align-items:center; gap:10px; font-size:14px; color: var(--muted);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e8c8" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
-            No further questions asked
-          </div>
-        </div>
-        <div style="margin-top: 2rem;">
-          <a href="#install" class="btn-secondary">
-            Not installed yet? Quick install
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-          </a>
-        </div>
-      </div>
-      <div class="reveal" style="transition-delay: 0.15s;">
-        <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Paste your review page URL after the skill name:</p>
-        <div class="code-block">
-          <div class="code-header">
-            <span class="code-lang">chat</span>
-            <button class="code-copy" onclick="copyCode('howto-cmd')">copy</button>
-          </div>
-          <div class="code-content" id="howto-cmd"><span class="cmd">/customer-review-analyst</span> https://www.trustpilot.com/review/tiktok.com</div>
-        </div>
-        <p class="install-note">Works on Trustpilot, Amazon, Google Play, App Store, and more. If no URL is provided, the skill will prompt you for one.</p>
       </div>
     </div>
   </div>
