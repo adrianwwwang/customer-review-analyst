@@ -28,7 +28,7 @@ and visualizing review data into a polished, interactive report.
 | Setting | Fixed value |
 |---------|-------------|
 | Time range | Last 6 months |
-| Output | HTML dashboard + PowerPoint slides |
+| Output | HTML dashboard |
 | Review data | Fetch fresh, never save to disk |
 | Output directory | Current working directory |
 
@@ -240,59 +240,17 @@ The output is a polished single-page dark-theme dashboard. Use **Chart.js** for 
 
 ---
 
-## Step 5: Generate the slides deck
-
-Always generate a PowerPoint deck alongside the HTML dashboard.
-
-### Core Principles
-
-1. **Executive-Ready** — Each slide must be instantly understandable to a C-suite executive. No jargon, no ambiguity. 
-2. **Show, Don't Tell** — Generate visual previews, not abstract choices. People discover what they want by seeing it.
-3. **Distinctive Design** — No generic "AI slop." Every presentation must feel custom-crafted.
-4. **Viewport Fitting (NON-NEGOTIABLE)** — Every slide MUST fit exactly within 100vh. No scrolling within slides, ever. Content overflows? Split into multiple slides.
-
-### Design Aesthetics
-
-You tend to converge toward generic, "on distribution" outputs. In frontend design, this creates what users call the "AI slop" aesthetic. Avoid this: make creative, distinctive frontends that surprise and delight.
-
-Focus on:
-- Typography: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics.
-- Color & Theme: Commit to a cohesive aesthetic. Use CSS variables for consistency as just created from the HTML dashboard in step 4. Dominant colors with sharp accents outperform timid, evenly-distributed palettes. Draw from IDE themes and cultural aesthetics for inspiration.
-- Motion: Use animations for effects and micro-interactions. Prioritize CSS-only solutions for HTML. Use Motion library for React when available. Focus on high-impact moments: one well-orchestrated page load with staggered reveals (animation-delay) creates more delight than scattered micro-interactions.
-- Backgrounds: Create atmosphere and depth rather than defaulting to solid colors. Layer CSS gradients, use geometric patterns, or add contextual effects that match the overall aesthetic.
-
-Avoid generic AI-generated aesthetics:
-- Overused font families (Inter, Roboto, Arial, system fonts)
-- Cliched color schemes (particularly purple gradients on white backgrounds)
-- Predictable layouts and component patterns
-- Cookie-cutter design that lacks context-specific character
-
-Interpret creatively and make unexpected choices that feel genuinely designed for the context. Vary between light and dark themes, different fonts, different aesthetics. You still tend to converge on common choices (Space Grotesk, for example) across generations. Avoid this: it is critical that you think outside the box!
-
-
-Use `python-pptx` to create a PowerPoint. For charts, save Plotly figures as PNG images
-first (using `kaleido` or `orca`), then embed them. Slides:
-1. Title: product name, analysis period, total reviews
-2. Key metrics: avg rating, sentiment breakdown pie
-3. Rating trend chart
-4. Sentiment trend chart
-5. Rating segmentation chart
-6. Top complaints (combine onto 1–2 slides with quotes)
-7. Action items
-
-Save as: `[OUTPUT_DIR]/customer_review_slides_[product-slug]_[YYYY-MM-DD].pptx`
-
----
-
-## Step 6: Final summary
+## Step 5: Final summary
 
 Tell the user:
-- **Output directory** used (`OUTPUT_DIR`, resolved to absolute path)
-- File paths: HTML dashboard + PPTX slides
 - Total reviews analyzed and the date range covered
 - Overall sentiment split (e.g., "71% positive · 15% neutral · 14% negative")
 - Top 3 complaint themes
 - Top 3 action items
+
+End with exactly this closing line (fill in the filename and resolve to absolute path):
+
+> Your report **[customer_review_report_product-slug_YYYY-MM-DD.html](absolute/path/to/file)** is ready.
 
 ---
 

@@ -6,16 +6,17 @@ An [agent skill](https://docs.github.com/en/copilot/concepts/agents/about-agent-
 
 Works with **Claude Code**, **GitHub Copilot**, **Cursor**, **Codex**, **Kiro**, **OpenClaw**, and any tool that supports the open `SKILL.md` standard.
 
-Give it a product review URL or just a product name, and it automatically produces two files in your current folder — no further questions asked.
+Give it a product review URL or just a product name, and it automatically produces an HTML dashboard in your current folder — no further questions asked.
 
 ---
 
 ## What it does
 
-| Output | Description |
-|--------|-------------|
-| **HTML dashboard** | Dark-theme interactive single-file report with trend charts, sentiment analysis, complaint themes, verbatim quotes, and action items |
-| **PowerPoint slides** | 7-slide deck ready for stakeholder presentations |
+| Output | Description | Always? |
+|--------|-------------|---------|
+| **HTML dashboard** | Dark-theme interactive single-file report with trend charts, sentiment analysis, complaint themes, verbatim quotes, and action items | Yes |
+| **PDF report** | Static version of the dashboard | Optional |
+| **Raw JSON** | Saved review data for future reuse (pass `--save-data`) | Optional |
 
 **Example output** — TikTok analysis · 154 reviews · Dec 2025–Mar 2026 · 2.18 avg rating · 67.5% negative sentiment:
 
@@ -25,19 +26,20 @@ Give it a product review URL or just a product name, and it automatically produc
 
 ## Architecture
 
-The skill is a single `SKILL.md` manifest that orchestrates the AI through a 6-step workflow:
+The skill is a single `SKILL.md` manifest that orchestrates the AI through a 5-step workflow:
 
 ```
 User request
     │
     ▼
-Step 1 ── Gather inputs
-          URL or product name · time range · output formats · output directory
+Step 1 ── Start immediately
+          Extract URL from message · or prompt for one · no further questions
     │
     ▼
-Step 2 ── Get review data
-          WebFetch from URL  ──or──  WebSearch for product  ──or──  Load existing JSON
-          Paginate to collect 50+ reviews · filter by time range · optionally save raw JSON
+Step 2 ── Get review data (last 6 months)
+          5-method cascade: WebFetch HTML → paginated API → WebSearch cache
+                            → Playwright headless → Selenium fallback
+          Paginate to collect 50+ reviews · deduplicate · keep in memory
     │
     ▼
 Step 3 ── Analyze (Python script written + run by the AI)
@@ -51,12 +53,9 @@ Step 4 ── Generate HTML dashboard
           scripts/generate_html.py · Chart.js · dark theme · fully self-contained
     │
     ▼
-Step 5 ── Optional outputs
-          python-pptx → .pptx slides   │   weasyprint/pdfkit → .pdf
-    │
-    ▼
-Step 6 ── Summary
-          File paths · sentiment split · top 3 complaints · top 3 actions
+Step 5 ── Summary
+          Sentiment split · top 3 complaints · top 3 actions
+          → "Your report customer_review_report_xxx.html is ready."
 ```
 
 **Key files:**
@@ -85,8 +84,8 @@ customer-review-analyst/
 | Package | Purpose | Required? |
 |---------|---------|-----------|
 | Chart.js | Interactive charts in HTML | Auto — loaded from CDN |
-| `python-pptx` | PowerPoint generation | Only for `.pptx` output |
-| `matplotlib` | Chart images in slides | Only for `.pptx` output |
+| `playwright` | Headless browser for JS-rendered pages | Auto-installed if needed |
+| `selenium` | Browser fallback if playwright unavailable | Auto-installed if needed |
 | `weasyprint` | HTML → PDF | Only for `.pdf` output |
 
 ---
