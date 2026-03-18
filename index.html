@@ -1354,9 +1354,9 @@ footer {
               <span class="code-lang">bash</span>
               <button class="code-copy" onclick="copyCode('claude-code-global')">copy</button>
             </div>
-            <div class="code-content" id="claude-code-global"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">~/.claude/skills/customer-review-analyst</span>
-<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">~/.claude/skills/customer-review-analyst/SKILL.md</span> \
-  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md</div>
+            <div class="code-content" id="claude-code-global"><span class="cmd">git clone</span> https://github.com/adrianwwwang/customer-review-analyst.git <span class="path">/tmp/cra</span>
+<span class="cmd">cp</span> <span class="flag">-r</span> <span class="path">/tmp/cra/skills/customer-review-analyst</span> <span class="path">~/.claude/skills/</span>
+<span class="cmd">rm</span> <span class="flag">-rf</span> <span class="path">/tmp/cra</span></div>
           </div>
           <p class="install-note" style="margin-top:14px;margin-bottom:10px;font-weight:600;">Project skill (current repo only):</p>
           <div class="code-block">
@@ -1364,9 +1364,10 @@ footer {
               <span class="code-lang">bash</span>
               <button class="code-copy" onclick="copyCode('claude-code-project')">copy</button>
             </div>
-            <div class="code-content" id="claude-code-project"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.claude/skills/customer-review-analyst</span>
-<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">.claude/skills/customer-review-analyst/SKILL.md</span> \
-  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md</div>
+            <div class="code-content" id="claude-code-project"><span class="cmd">git clone</span> https://github.com/adrianwwwang/customer-review-analyst.git <span class="path">/tmp/cra</span>
+<span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.claude/skills</span>
+<span class="cmd">cp</span> <span class="flag">-r</span> <span class="path">/tmp/cra/skills/customer-review-analyst</span> <span class="path">.claude/skills/</span>
+<span class="cmd">rm</span> <span class="flag">-rf</span> <span class="path">/tmp/cra</span></div>
           </div>
           <p class="install-note" style="margin-top:12px;">Restart Claude Code — the skill is auto-detected in all projects.</p>
         </div>

@@ -64,16 +64,17 @@ Step 5 ── Summary
 
 **Global skill (available across all projects):**
 ```bash
-mkdir -p ~/.claude/skills/customer-review-analyst
-curl -o ~/.claude/skills/customer-review-analyst/SKILL.md \
-  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+git clone https://github.com/adrianwwwang/customer-review-analyst.git /tmp/cra
+cp -r /tmp/cra/skills/customer-review-analyst ~/.claude/skills/
+rm -rf /tmp/cra
 ```
 
 **Project skill (current repo only):**
 ```bash
-mkdir -p .claude/skills/customer-review-analyst
-curl -o .claude/skills/customer-review-analyst/SKILL.md \
-  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+git clone https://github.com/adrianwwwang/customer-review-analyst.git /tmp/cra
+mkdir -p .claude/skills
+cp -r /tmp/cra/skills/customer-review-analyst .claude/skills/
+rm -rf /tmp/cra
 ```
 
 Restart Claude Code — the skill is auto-detected and available in all projects.
