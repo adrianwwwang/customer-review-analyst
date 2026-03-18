@@ -345,6 +345,31 @@ tbody td{{ padding:12px 16px; color:var(--text-primary); vertical-align:middle; 
 .fade-in:nth-child(5){{ animation-delay:.25s; }}
 .fade-in:nth-child(6){{ animation-delay:.30s; }}
 
+/* ── How to ────────────────────────────────────────────────────── */
+.howto-card{{
+  background:linear-gradient(135deg,rgba(249,115,22,.08) 0%,rgba(251,146,60,.05) 100%);
+  border:1px solid rgba(249,115,22,.25);
+  border-radius:var(--radius); padding:28px 32px; margin-bottom:30px;
+}}
+.howto-desc{{ font-size:14px; color:var(--text-secondary); margin-bottom:20px; line-height:1.6; }}
+.howto-steps{{ display:flex; flex-direction:column; gap:14px; }}
+.howto-step{{ display:flex; align-items:flex-start; gap:16px; }}
+.howto-num{{
+  width:28px; height:28px; border-radius:50%; flex-shrink:0;
+  background:var(--accent-gradient); color:#fff; font-size:13px; font-weight:700;
+  display:flex; align-items:center; justify-content:center; margin-top:2px;
+}}
+.howto-text{{ font-size:14px; color:var(--text-primary); line-height:1.7; }}
+.howto-text a{{ color:var(--accent-3); text-decoration:none; }}
+.howto-text a:hover{{ text-decoration:underline; }}
+.howto-code{{
+  display:inline-block; margin-top:8px;
+  background:var(--bg-secondary); border:1px solid var(--border-color);
+  border-radius:var(--radius-sm); padding:10px 16px;
+  font-family:'SF Mono','Fira Code','Consolas',monospace; font-size:13px;
+  color:var(--accent-3); letter-spacing:.2px;
+}}
+
 /* ── Footer ────────────────────────────────────────────────────── */
 .footer{{ text-align:center; padding:40px 30px; color:var(--text-muted); font-size:12px; border-top:1px solid var(--border-color); margin-top:40px; }}
 </style>
@@ -504,6 +529,34 @@ tbody td{{ padding:12px 16px; color:var(--text-primary); vertical-align:middle; 
   <div class="section-title fade-in"><div class="icon">✅</div> Recommended Actions</div>
   <div class="actions-list">
     {actions_html}
+  </div>
+
+  <!-- How to -->
+  <div class="section-title fade-in" id="how-to"><div class="icon">🚀</div> How to Get This Report</div>
+  <div class="howto-card fade-in">
+    <p class="howto-desc">Generate an interactive report like this for any product — in one command.</p>
+    <div class="howto-steps">
+      <div class="howto-step">
+        <div class="howto-num">1</div>
+        <div class="howto-text">
+          <strong>Install the skill</strong> (one-time setup):
+          <div class="howto-code">cp -r customer-review-analyst/skills/customer-review-analyst ~/.claude/skills/</div>
+          <a href="https://github.com/adrianwwwang/customer-review-analyst#installation" target="_blank" style="display:inline-block;margin-top:6px;font-size:13px;">Full installation guide (Claude, Copilot, Cursor…) →</a>
+        </div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-num">2</div>
+        <div class="howto-text"><strong>Open Claude Code chat</strong> in any project folder</div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-num">3</div>
+        <div class="howto-text">
+          <strong>Type the command with any review page URL:</strong>
+          <div class="howto-code">/customer-review-analyst https://www.trustpilot.com/review/tiktok.com</div>
+        </div>
+      </div>
+    </div>
+    <p class="howto-desc" style="margin-top:20px;margin-bottom:0;">The full dashboard and slides are generated automatically — no other questions asked. &nbsp;<a href="https://github.com/adrianwwwang/customer-review-analyst#how-to" target="_blank">Learn more →</a></p>
   </div>
 
 </main>

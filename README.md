@@ -219,49 +219,54 @@ curl -o skills/customer-review-analyst/SKILL.md \
 
 ---
 
+## How to
+
+Open Claude Code (or any supported AI editor) and type:
+
+```
+/customer-review-analyst https://www.trustpilot.com/review/tiktok.com
+```
+
+That's it. The skill fetches the last 6 months of reviews, analyzes them, and drops two files in your current folder — no further questions asked:
+
+```
+./customer_review_report_[product]_[date].html    ← interactive dashboard
+./customer_review_slides_[product]_[date].pptx    ← ready-to-present slides
+```
+
+If you don't include a URL, the skill shows a single prompt asking for one, then proceeds automatically.
+
+---
+
 ## Usage
 
-Once installed, speak naturally. Trigger phrases:
-
-- `"Analyze reviews for [product name or URL]"`
-- `"What are customers saying about [product]?"`
-- `"Give me a review dashboard for [URL]"`
-- `"Summarize customer complaints for [product]"`
-- `"Product feedback summary for [URL]"`
-
-### Example prompts
+Once installed, trigger the skill with a URL:
 
 ```
-Analyze customer reviews at https://www.amazon.com/dp/B07S829LBX for the last 6 months.
-HTML only is fine.
+/customer-review-analyst https://www.trustpilot.com/review/tiktok.com
 ```
 
+Or with a product name (the skill finds the review page for you):
+
 ```
-What are customers saying about Bose QuietComfort 45 headphones?
-Save the data and also generate slides.
+/customer-review-analyst Bose QuietComfort 45
 ```
 
-### What the AI will ask you
+**Fixed defaults — no questions asked:**
 
-Before starting, it gathers **5 inputs** up front:
-
-| # | Question | Default |
-|---|----------|---------|
-| 1 | Data source — URL, product name, or path to existing JSON | — |
-| 2 | Time range | Last 6 months |
-| 3 | Output formats — HTML (always), PPTX, PDF | HTML only |
-| 4 | Review data — fetch & save / fetch only / load existing | Fetch only |
-| 5 | Output directory | Current working directory |
+| Setting | Value |
+|---------|-------|
+| Time range | Last 6 months |
+| Output | HTML dashboard + PowerPoint slides |
+| Review data | Fetch fresh, never saved to disk |
+| Output directory | Current working directory |
 
 ### Output file structure
 
 ```
-[output-dir]/
-├── customer_review_report_[product]_[date].html    ← always
-├── customer_review_slides_[product]_[date].pptx    ← if requested
-├── customer_review_report_[product]_[date].pdf     ← if requested
-├── reviews_[product]_[date].json                   ← if "save data" chosen
-├── analysis_results.json
+./
+├── customer_review_report_[product]_[date].html    ← always generated
+├── customer_review_slides_[product]_[date].pptx    ← always generated
 └── scripts/
     ├── generate_html.py
     ├── analyze_reviews.py

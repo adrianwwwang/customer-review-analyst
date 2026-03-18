@@ -21,48 +21,32 @@ and visualizing review data into a polished, interactive report.
 
 ---
 
-## Step 1: Gather inputs before doing anything
+## Step 1: Start immediately
 
-Ask the user these **five questions up front** and wait for all answers before proceeding:
+**Just start.** These settings are fixed — do not ask about them:
 
-**1. Data source**
-> "Please share a product review page URL (e.g. an Amazon, Trustpilot, Google Reviews, or
-> app store page). If you only have a product name, I can search for one — just let me know."
+| Setting | Fixed value |
+|---------|-------------|
+| Time range | Last 6 months |
+| Output | HTML dashboard + PowerPoint slides |
+| Review data | Fetch fresh, never save to disk |
+| Output directory | Current working directory |
 
-A direct URL is recommended because product name searches may land on the wrong product.
+Store `OUTPUT_DIR = "."` throughout Steps 2–5.
 
-**2. Time range**
-> "I'll analyze the last **6 months** of reviews by default. Would you like to adjust this?
-> (e.g., 3 months, 1 year, all available reviews)"
+**If the user's message includes a URL**, extract it and go directly to Step 2.
 
-**3. Output formats** — present as a checklist:
-- ☑ **HTML interactive dashboard** (always generated)
-- ☐ **Slides deck** (.pptx) — optional
-- ☐ **PDF report** — optional
+**If no URL is provided**, show exactly this and wait:
 
-**4. Review data**
-> "For the review data, would you like to:
-> - **(A) Load from an existing JSON file** I've saved before? (provide the file path)
-> - **(B) Fetch fresh data and save it** as a new JSON file for future reuse
-> - **(C) Fetch fresh data but don't save it**"
+> Please paste the review page URL to analyze:
+> Example: `https://www.trustpilot.com/review/tiktok.com`
 
-**5. Output destination**
-> "Where should I save the report files?
-> - **Default:** current working directory (press Enter / say 'default')
-> - **Custom:** provide an absolute or relative path (e.g. `~/Desktop/reports/my-product`)"
-
-If the user provides a path that does not exist, create it with `mkdir -p` before writing any files.
-Store this value as `OUTPUT_DIR` and prefix **all** output file paths with it throughout Steps 2–5.
+Once you have the URL, proceed immediately — no further questions.
 
 ---
 
 ## Step 2: Get the review data
 
-### If loading from existing JSON (option A)
-Read the file the user provided. Validate it contains reviews with at least `date`, `rating`,
-and `text` fields. Skip to Step 3.
-
-### If fetching from a URL (options B or C)
 Use `WebFetch` to retrieve the review page. For each review, extract:
 - `date` (ISO format: YYYY-MM-DD)
 - `rating` (number 1–5)
@@ -71,18 +55,15 @@ Use `WebFetch` to retrieve the review page. For each review, extract:
 - `verified` (boolean, if present)
 - `helpful_votes` (integer, if present)
 
-Filter to reviews within the requested time range. If the page paginates, follow pagination
+Filter to reviews within the last 6 months. If the page paginates, follow pagination
 links — aim for at least 50 reviews for meaningful analysis. If you get fewer, note it.
 
 **If a site blocks scraping:** Inform the user and suggest trying a different platform URL
 for the same product (e.g., Amazon instead of the brand's own site).
 
-**If saving data (option B):** After fetching, write raw reviews to:
-`[OUTPUT_DIR]/reviews_[product-slug]_[YYYY-MM-DD].json`
-
 ### If product name only (no URL)
-Use `WebSearch` to find the most prominent review page. Show the user the URL you found and
-ask them to confirm before fetching.
+Use `WebSearch` to find the most prominent review page. Proceed to fetch it directly — no
+need to confirm with the user first.
 
 ---
 
@@ -184,9 +165,10 @@ The output is a polished single-page dark-theme dashboard. Use **Chart.js** for 
 
 ---
 
-## Step 5: Generate optional outputs
+## Step 5: Generate the slides deck
 
-### Slides deck (.pptx) — if requested
+Always generate a PowerPoint deck alongside the HTML dashboard.
+
 Use `python-pptx` to create a PowerPoint. For charts, save Plotly figures as PNG images
 first (using `kaleido` or `orca`), then embed them. Slides:
 1. Title: product name, analysis period, total reviews
@@ -199,26 +181,13 @@ first (using `kaleido` or `orca`), then embed them. Slides:
 
 Save as: `[OUTPUT_DIR]/customer_review_slides_[product-slug]_[YYYY-MM-DD].pptx`
 
-### PDF report — if requested
-Convert the HTML to PDF. Try in order:
-```bash
-weasyprint [OUTPUT_DIR]/customer_review_report_[product-slug]_[YYYY-MM-DD].html \
-           [OUTPUT_DIR]/customer_review_report_[product-slug]_[YYYY-MM-DD].pdf
-# or
-python -m pdfkit [OUTPUT_DIR]/customer_review_report_[product-slug]_[YYYY-MM-DD].html \
-                 [OUTPUT_DIR]/customer_review_report_[product-slug]_[YYYY-MM-DD].pdf
-```
-Note to user that interactive chart features won't carry over to PDF — that's expected.
-
-Save as: `[OUTPUT_DIR]/customer_review_report_[product-slug]_[YYYY-MM-DD].pdf`
-
 ---
 
 ## Step 6: Final summary
 
 Tell the user:
 - **Output directory** used (`OUTPUT_DIR`, resolved to absolute path)
-- File paths for all generated outputs
+- File paths: HTML dashboard + PPTX slides
 - Total reviews analyzed and the date range covered
 - Overall sentiment split (e.g., "71% positive · 15% neutral · 14% negative")
 - Top 3 complaint themes
