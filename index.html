@@ -1376,18 +1376,31 @@ footer {
         </div>
 
         <div id="tab-copilot" class="install-panel">
+          <p class="install-note" style="margin-bottom:10px;font-weight:600;">Global skill (all projects):</p>
           <div class="code-block">
             <div class="code-header">
               <span class="code-lang">bash</span>
-              <button class="code-copy" onclick="copyCode('copilot-code')">copy</button>
+              <button class="code-copy" onclick="copyCode('copilot-code-global')">copy</button>
             </div>
-            <div class="code-content" id="copilot-code"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">~/.copilot/skills/customer-review-analyst/scripts</span>
+            <div class="code-content" id="copilot-code-global"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">~/.copilot/skills/customer-review-analyst/scripts</span>
 <span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">~/.copilot/skills/customer-review-analyst/SKILL.md</span> \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
 <span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">~/.copilot/skills/customer-review-analyst/scripts/generate_html.py</span> \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py</div>
           </div>
-          <p class="install-note">Works in VS Code with GitHub Copilot Chat.</p>
+          <p class="install-note" style="margin-top:14px;margin-bottom:10px;font-weight:600;">Project skill (current repo only):</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="code-copy" onclick="copyCode('copilot-code-project')">copy</button>
+            </div>
+            <div class="code-content" id="copilot-code-project"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.github/skills/customer-review-analyst/scripts</span>
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">.github/skills/customer-review-analyst/SKILL.md</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">.github/skills/customer-review-analyst/scripts/generate_html.py</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py</div>
+          </div>
+          <p class="install-note" style="margin-top:12px;">Works in VS Code with GitHub Copilot Chat.</p>
         </div>
 
         <div id="tab-cursor" class="install-panel">
