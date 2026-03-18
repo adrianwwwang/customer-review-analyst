@@ -280,11 +280,10 @@ Open Claude Code (or any supported AI editor) and type:
 /customer-review-analyst https://www.trustpilot.com/review/tiktok.com
 ```
 
-That's it. The skill fetches the last 6 months of reviews, analyzes them, and drops two files in your current folder — no further questions asked:
+That's it. The skill fetches the last 6 months of reviews, analyzes them, and drops a file in your current folder — no further questions asked:
 
 ```
-./customer_review_report_[product]_[date].html    ← interactive dashboard
-./customer_review_slides_[product]_[date].pptx    ← ready-to-present slides
+./[product]_customer_review_[timestamp].html    ← interactive dashboard
 ```
 
 If you don't include a URL, the skill shows a single prompt asking for one, then proceeds automatically.
