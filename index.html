@@ -1369,16 +1369,27 @@ footer {
         </div>
 
         <div id="tab-cursor" class="install-panel">
+          <p class="install-note" style="margin-bottom:10px;font-weight:600;">Project skill (current repo only):</p>
           <div class="code-block">
             <div class="code-header">
               <span class="code-lang">bash</span>
-              <button class="code-copy" onclick="copyCode('cursor-code')">copy</button>
+              <button class="code-copy" onclick="copyCode('cursor-code-project')">copy</button>
             </div>
-            <div class="code-content" id="cursor-code"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.cursor/rules</span>
-<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">.cursor/rules/customer-review-analyst.mdc</span> \
-  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/cursor/rules/customer-review-analyst.mdc</div>
+            <div class="code-content" id="cursor-code-project"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.cursor/skills/customer-review-analyst</span>
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">.cursor/skills/customer-review-analyst/SKILL.md</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md</div>
           </div>
-          <p class="install-note">Context-triggered — Cursor activates it automatically when your request matches.</p>
+          <p class="install-note" style="margin-top:14px;margin-bottom:10px;font-weight:600;">Global skill (all projects):</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="code-copy" onclick="copyCode('cursor-code-global')">copy</button>
+            </div>
+            <div class="code-content" id="cursor-code-global"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">~/.cursor/skills/customer-review-analyst</span>
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">~/.cursor/skills/customer-review-analyst/SKILL.md</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md</div>
+          </div>
+          <p class="install-note" style="margin-top:12px;">Auto-detected from context, or invoke manually with <code>/</code> in chat.</p>
         </div>
 
         <div id="tab-codex" class="install-panel">
