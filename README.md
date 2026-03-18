@@ -113,45 +113,51 @@ Restart Claude Code — the skill is auto-detected and available in all projects
 
 #### <img src="assets/vscode.png" height="20" valign="middle"> VS Code
 
-**Option A — Personal skill (available across all projects):**
+**Global skill (available across all projects):**
 ```bash
-cp -r customer-review-analyst/skills/customer-review-analyst ~/.copilot/skills/
+mkdir -p ~/.copilot/skills/customer-review-analyst
+curl -o ~/.copilot/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
 ```
 
-**Option B — Project skill (repo-specific):**
+**Project skill (current repo only):**
 ```bash
-mkdir -p your-project/.github/skills
-cp -r customer-review-analyst/skills/customer-review-analyst your-project/.github/skills/
+mkdir -p .github/skills/customer-review-analyst
+curl -o .github/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
 ```
 
 #### <img src="assets/jetbrains.png" height="20" valign="middle"> JetBrains
 
-**Option A — Personal skill (available across all projects):**
+**Global skill (available across all projects):**
 ```bash
-cp -r customer-review-analyst/skills/customer-review-analyst ~/.copilot/skills/
+mkdir -p ~/.copilot/skills/customer-review-analyst
+curl -o ~/.copilot/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
 ```
 
-**Option B — Project skill (repo-specific):**
+**Project skill (current repo only):**
 ```bash
-mkdir -p your-project/.github/skills
-cp -r customer-review-analyst/skills/customer-review-analyst your-project/.github/skills/
+mkdir -p .github/skills/customer-review-analyst
+curl -o .github/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
 ```
 
 ---
 
 ### <img src="assets/cursor.png" height="37" valign="middle"> Cursor
 
-**Project skill (current repo only):**
-```bash
-mkdir -p .cursor/skills/customer-review-analyst
-curl -o .cursor/skills/customer-review-analyst/SKILL.md \
-  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
-```
-
 **Global skill (available across all projects):**
 ```bash
 mkdir -p ~/.cursor/skills/customer-review-analyst
 curl -o ~/.cursor/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+```
+
+**Project skill (current repo only):**
+```bash
+mkdir -p .cursor/skills/customer-review-analyst
+curl -o .cursor/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
 ```
 
