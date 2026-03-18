@@ -98,16 +98,20 @@ rm -rf .claude/skills/customer-review-analyst
 
 **Global skill (available across all projects):**
 ```bash
-mkdir -p ~/.copilot/skills/customer-review-analyst
+mkdir -p ~/.copilot/skills/customer-review-analyst/scripts
 curl -o ~/.copilot/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+curl -o ~/.copilot/skills/customer-review-analyst/scripts/generate_html.py \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py
 ```
 
 **Project skill (current repo only):**
 ```bash
-mkdir -p .github/skills/customer-review-analyst
+mkdir -p .github/skills/customer-review-analyst/scripts
 curl -o .github/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+curl -o .github/skills/customer-review-analyst/scripts/generate_html.py \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py
 ```
 
 **Uninstall:**
@@ -122,16 +126,20 @@ rm -rf .github/skills/customer-review-analyst
 
 **Global skill (available across all projects):**
 ```bash
-mkdir -p ~/.config/github-copilot/intellij/skills/customer-review-analyst
+mkdir -p ~/.config/github-copilot/intellij/skills/customer-review-analyst/scripts
 curl -o ~/.config/github-copilot/intellij/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+curl -o ~/.config/github-copilot/intellij/skills/customer-review-analyst/scripts/generate_html.py \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py
 ```
 
 **Project skill (current repo only):**
 ```bash
-mkdir -p .github/skills/customer-review-analyst
+mkdir -p .github/skills/customer-review-analyst/scripts
 curl -o .github/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+curl -o .github/skills/customer-review-analyst/scripts/generate_html.py \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py
 ```
 
 **Uninstall:**
@@ -148,16 +156,20 @@ rm -rf .github/skills/customer-review-analyst
 
 **Global skill (available across all projects):**
 ```bash
-mkdir -p ~/.cursor/skills/customer-review-analyst
+mkdir -p ~/.cursor/skills/customer-review-analyst/scripts
 curl -o ~/.cursor/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+curl -o ~/.cursor/skills/customer-review-analyst/scripts/generate_html.py \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py
 ```
 
 **Project skill (current repo only):**
 ```bash
-mkdir -p .cursor/skills/customer-review-analyst
+mkdir -p .cursor/skills/customer-review-analyst/scripts
 curl -o .cursor/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+curl -o .cursor/skills/customer-review-analyst/scripts/generate_html.py \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py
 ```
 
 Cursor auto-detects the skill from context, or invoke it manually with `/` in chat.
@@ -176,16 +188,20 @@ rm -rf .cursor/skills/customer-review-analyst
 
 **Global install (all projects):**
 ```bash
-mkdir -p ~/.codex/skills/customer-review-analyst
+mkdir -p ~/.codex/skills/customer-review-analyst/scripts
 curl -o ~/.codex/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+curl -o ~/.codex/skills/customer-review-analyst/scripts/generate_html.py \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py
 ```
 
 **Project-level install:**
 ```bash
-mkdir -p .agents/skills/customer-review-analyst
+mkdir -p .agents/skills/customer-review-analyst/scripts
 curl -o .agents/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+curl -o .agents/skills/customer-review-analyst/scripts/generate_html.py \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py
 ```
 
 **Uninstall:**
@@ -209,9 +225,11 @@ curl -o .kiro/steering/customer-review-analyst.md \
 
 **Option B — Agent Skill (context-triggered):**
 ```bash
-mkdir -p .kiro/skills/customer-review-analyst
+mkdir -p .kiro/skills/customer-review-analyst/scripts
 curl -o .kiro/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+curl -o .kiro/skills/customer-review-analyst/scripts/generate_html.py \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py
 ```
 
 **Uninstall:**
@@ -228,16 +246,20 @@ rm -rf .kiro/skills/customer-review-analyst
 
 **Global install (all projects):**
 ```bash
-mkdir -p ~/.openclaw/skills/customer-review-analyst
+mkdir -p ~/.openclaw/skills/customer-review-analyst/scripts
 curl -o ~/.openclaw/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+curl -o ~/.openclaw/skills/customer-review-analyst/scripts/generate_html.py \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py
 ```
 
 **Project-level install:**
 ```bash
-mkdir -p skills/customer-review-analyst
+mkdir -p skills/customer-review-analyst/scripts
 curl -o skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+curl -o skills/customer-review-analyst/scripts/generate_html.py \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py
 ```
 
 **Uninstall:**

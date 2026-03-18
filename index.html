@@ -1381,9 +1381,11 @@ footer {
               <span class="code-lang">bash</span>
               <button class="code-copy" onclick="copyCode('copilot-code')">copy</button>
             </div>
-            <div class="code-content" id="copilot-code"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">~/.copilot/skills/customer-review-analyst</span>
+            <div class="code-content" id="copilot-code"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">~/.copilot/skills/customer-review-analyst/scripts</span>
 <span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">~/.copilot/skills/customer-review-analyst/SKILL.md</span> \
-  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md</div>
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">~/.copilot/skills/customer-review-analyst/scripts/generate_html.py</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py</div>
           </div>
           <p class="install-note">Works in VS Code with GitHub Copilot Chat.</p>
         </div>
@@ -1395,9 +1397,11 @@ footer {
               <span class="code-lang">bash</span>
               <button class="code-copy" onclick="copyCode('cursor-code-project')">copy</button>
             </div>
-            <div class="code-content" id="cursor-code-project"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.cursor/skills/customer-review-analyst</span>
+            <div class="code-content" id="cursor-code-project"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.cursor/skills/customer-review-analyst/scripts</span>
 <span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">.cursor/skills/customer-review-analyst/SKILL.md</span> \
-  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md</div>
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">.cursor/skills/customer-review-analyst/scripts/generate_html.py</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py</div>
           </div>
           <p class="install-note" style="margin-top:14px;margin-bottom:10px;font-weight:600;">Global skill (all projects):</p>
           <div class="code-block">
@@ -1405,9 +1409,11 @@ footer {
               <span class="code-lang">bash</span>
               <button class="code-copy" onclick="copyCode('cursor-code-global')">copy</button>
             </div>
-            <div class="code-content" id="cursor-code-global"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">~/.cursor/skills/customer-review-analyst</span>
+            <div class="code-content" id="cursor-code-global"><span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">~/.cursor/skills/customer-review-analyst/scripts</span>
 <span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">~/.cursor/skills/customer-review-analyst/SKILL.md</span> \
-  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md</div>
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">~/.cursor/skills/customer-review-analyst/scripts/generate_html.py</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py</div>
           </div>
           <p class="install-note" style="margin-top:12px;">Auto-detected from context, or invoke manually with <code>/</code> in chat.</p>
         </div>
@@ -1419,9 +1425,11 @@ footer {
               <button class="code-copy" onclick="copyCode('codex-code')">copy</button>
             </div>
             <div class="code-content" id="codex-code"><span class="comment"># Global install</span>
-<span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">~/.codex/skills/customer-review-analyst</span>
+<span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">~/.codex/skills/customer-review-analyst/scripts</span>
 <span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">~/.codex/skills/customer-review-analyst/SKILL.md</span> \
-  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md</div>
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">~/.codex/skills/customer-review-analyst/scripts/generate_html.py</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py</div>
           </div>
           <p class="install-note">Or use project-level install at <code style="font-family:var(--font-mono); font-size:12px; color:var(--accent)">.agents/skills/</code></p>
         </div>
@@ -1438,7 +1446,11 @@ footer {
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
 
 <span class="comment"># Or as an agent skill (context-triggered)</span>
-<span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.kiro/skills/customer-review-analyst</span></div>
+<span class="cmd">mkdir</span> <span class="flag">-p</span> <span class="path">.kiro/skills/customer-review-analyst/scripts</span>
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">.kiro/skills/customer-review-analyst/SKILL.md</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+<span class="cmd">curl</span> <span class="flag">-o</span> <span class="path">.kiro/skills/customer-review-analyst/scripts/generate_html.py</span> \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/scripts/generate_html.py</div>
           </div>
           <p class="install-note">Steering files are always active; skills are context-triggered.</p>
         </div>
