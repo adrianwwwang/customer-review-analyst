@@ -54,7 +54,7 @@ Step 4 ── Generate HTML dashboard
     ▼
 Step 5 ── Summary
           Sentiment split · top 3 complaints · top 3 actions
-          → "Your report customer_review_report_xxx.html is ready."
+          → "Your report tiktok_report_2026-03-18.html is ready."
 ```
 ---
 
@@ -283,7 +283,7 @@ Open Claude Code (or any supported AI editor) and type:
 That's it. The skill fetches the last 6 months of reviews, analyzes them, and drops a file in your current folder — no further questions asked:
 
 ```
-./[product]_customer_review_[timestamp].html    ← interactive dashboard
+./[productname]_report_[timestamp].html    ← interactive dashboard
 ```
 
 If you don't include a URL, the skill shows a single prompt asking for one, then proceeds automatically.
@@ -309,7 +309,7 @@ Or with a product name (the skill finds the review page for you):
 | Setting | Value |
 |---------|-------|
 | Time range | Last 6 months |
-| Output | HTML dashboard + PowerPoint slides |
+| Output | HTML dashboard |
 | Review data | Fetch fresh, never saved to disk |
 | Output directory | Current working directory |
 
@@ -317,12 +317,9 @@ Or with a product name (the skill finds the review page for you):
 
 ```
 ./
-├── customer_review_report_[product]_[date].html    ← always generated
-├── customer_review_slides_[product]_[date].pptx    ← always generated
+├── [productname]_report_[timestamp].html    ← always generated
 └── scripts/
-    ├── generate_html.py
-    ├── analyze_reviews.py
-    └── generate_slides.py
+    └── generate_html.py
 ```
 
 ---

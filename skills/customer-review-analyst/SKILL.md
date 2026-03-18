@@ -265,7 +265,7 @@ Tell the user:
 
 End with exactly this closing line (fill in the filename and resolve to absolute path):
 
-> Your report **[productname_customer_review_timestamp.html](absolute/path/to/file)** is ready.
+> Your report **[productname_report_timestamp.html](absolute/path/to/file)** is ready.
 
 ---
 
@@ -278,7 +278,7 @@ Generates the dark-theme HTML dashboard. Placed at `[OUTPUT_DIR]/scripts/generat
 ```bash
 python [OUTPUT_DIR]/scripts/generate_html.py \
   --data [OUTPUT_DIR]/analysis_results.json \
-  --output [OUTPUT_DIR]/[productname]_customer_review_[timestamp].html
+  --output [OUTPUT_DIR]/[productname]_report_[timestamp].html
 ```
 
 Expected `analysis_results.json` structure:
