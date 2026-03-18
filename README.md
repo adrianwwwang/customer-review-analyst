@@ -147,31 +147,25 @@ cp -r customer-review-analyst/skills/customer-review-analyst your-project/.githu
 cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
 ```
 
-#### <img src="assets/eclipse.png" height="20" valign="middle"> Eclipse
-
-**Custom instructions:**
-```bash
-cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
-```
-
-#### <img src="assets/xcode.png" height="20" valign="middle"> Xcode
-
-**Custom instructions:**
-```bash
-cp customer-review-analyst/github-copilot/copilot-instructions.md your-project/.github/copilot-instructions.md
-```
-
 ---
 
 ### <img src="assets/cursor.png" height="37" valign="middle"> Cursor
 
+**Project skill (current repo only):**
 ```bash
-mkdir -p .cursor/rules
-curl -o .cursor/rules/customer-review-analyst.mdc \
-  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/cursor/rules/customer-review-analyst.mdc
+mkdir -p .cursor/skills/customer-review-analyst
+curl -o .cursor/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
 ```
 
-The rule is context-triggered — Cursor activates it automatically when your request matches the skill description.
+**Global skill (available across all projects):**
+```bash
+mkdir -p ~/.cursor/skills/customer-review-analyst
+curl -o ~/.cursor/skills/customer-review-analyst/SKILL.md \
+  https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+```
+
+Cursor auto-detects the skill from context, or invoke it manually with `/` in chat.
 
 ---
 
