@@ -105,6 +105,11 @@ cp -r customer-review-analyst/skills/customer-review-analyst ~/.claude/skills/
 
 Restart Claude Code — the skill is auto-detected and available in all projects.
 
+**Uninstall:**
+```bash
+rm -rf ~/.claude/skills/customer-review-analyst
+```
+
 ---
 
 ### <img src="assets/github-copilot-icon.png" height="37" valign="middle"> GitHub Copilot
@@ -125,6 +130,14 @@ curl -o .github/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
 ```
 
+**Uninstall:**
+```bash
+# Global
+rm -rf ~/.copilot/skills/customer-review-analyst
+# Project
+rm -rf .github/skills/customer-review-analyst
+```
+
 #### <img src="assets/jetbrains.png" height="20" valign="middle"> JetBrains
 
 **Global skill (available across all projects):**
@@ -139,6 +152,14 @@ curl -o ~/.config/github-copilot/intellij/skills/customer-review-analyst/SKILL.m
 mkdir -p .github/skills/customer-review-analyst
 curl -o .github/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+```
+
+**Uninstall:**
+```bash
+# Global
+rm -rf ~/.config/github-copilot/intellij/skills/customer-review-analyst
+# Project
+rm -rf .github/skills/customer-review-analyst
 ```
 
 ---
@@ -161,6 +182,14 @@ curl -o .cursor/skills/customer-review-analyst/SKILL.md \
 
 Cursor auto-detects the skill from context, or invoke it manually with `/` in chat.
 
+**Uninstall:**
+```bash
+# Global
+rm -rf ~/.cursor/skills/customer-review-analyst
+# Project
+rm -rf .cursor/skills/customer-review-analyst
+```
+
 ---
 
 ### <img src="assets/codex-light.png" height="37" valign="middle"> Codex
@@ -177,6 +206,14 @@ curl -o ~/.codex/skills/customer-review-analyst/SKILL.md \
 mkdir -p .agents/skills/customer-review-analyst
 curl -o .agents/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+```
+
+**Uninstall:**
+```bash
+# Global
+rm -rf ~/.codex/skills/customer-review-analyst
+# Project
+rm -rf .agents/skills/customer-review-analyst
 ```
 
 ---
@@ -197,6 +234,14 @@ curl -o .kiro/skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
 ```
 
+**Uninstall:**
+```bash
+# Steering file
+rm -f .kiro/steering/customer-review-analyst.md
+# Agent skill
+rm -rf .kiro/skills/customer-review-analyst
+```
+
 ---
 
 ### <img src="assets/openclaw.png" height="37" valign="middle"> OpenClaw
@@ -213,6 +258,14 @@ curl -o ~/.openclaw/skills/customer-review-analyst/SKILL.md \
 mkdir -p skills/customer-review-analyst
 curl -o skills/customer-review-analyst/SKILL.md \
   https://raw.githubusercontent.com/adrianwwwang/customer-review-analyst/main/skills/customer-review-analyst/SKILL.md
+```
+
+**Uninstall:**
+```bash
+# Global
+rm -rf ~/.openclaw/skills/customer-review-analyst
+# Project
+rm -rf skills/customer-review-analyst
 ```
 
 ---
