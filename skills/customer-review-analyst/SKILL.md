@@ -47,7 +47,9 @@ Once you have the URL, proceed immediately — no further questions.
 
 ## Step 2: Get the review data
 
-Use `WebFetch` to retrieve the review page. For each review, extract:
+**Target time range:** Last 6 months (from today back), unless the user specified a different range in the arguments.
+
+For each review, extract:
 - `date` (ISO format: YYYY-MM-DD)
 - `rating` (number 1–5)
 - `text` (full review body)
@@ -55,11 +57,84 @@ Use `WebFetch` to retrieve the review page. For each review, extract:
 - `verified` (boolean, if present)
 - `helpful_votes` (integer, if present)
 
-Filter to reviews within the last 6 months. If the page paginates, follow pagination
-links — aim for at least 50 reviews for meaningful analysis. If you get fewer, note it.
+Filter to reviews within the target time range. Aim for at least 50 reviews for meaningful analysis (follow pagination to hit that target). If you end up with fewer, note it.
 
-**If a site blocks scraping:** Inform the user and suggest trying a different platform URL
-for the same product (e.g., Amazon instead of the brand's own site).
+**Data storage:** Hold all fetched reviews a JSON array. Remove the JSON from disk unless the user explicitly passed `--save-data` or `--keep-data` in the invocation arguments.
+
+### Fetching strategy — try every method in order
+
+Work through the following approaches until you have sufficient data. Never stop at the first failure.
+
+**Method 1 — `WebFetch` (direct HTML)**
+Fetch the URL directly. Parse review cards from the raw HTML. Follow `next page` / numbered pagination links and repeat until 6-month cutoff is reached or pages are exhausted.
+
+**Method 2 — `WebFetch` on paginated API endpoints**
+Many review platforms expose a JSON API behind their pagination. Inspect the URL pattern and attempt common variants:
+- Trustpilot: `https://www.trustpilot.com/review/{domain}?page=N`
+- Google Play: `https://play.google.com/store/apps/details?id=...&reviewSortOrder=...`
+- App Store, Amazon, Yelp, G2, Capterra: try documented or discoverable API endpoints with page/offset params
+
+Fetch each page, extract the JSON payload, collect reviews, increment page until out of range.
+
+**Method 3 — `WebSearch` for cached / aggregated data**
+Search for `site:trustpilot.com "{product}" reviews` or `"{product}" reviews after:YYYY-MM` to surface cached pages, review aggregators, or news summaries that contain review text. Extract whatever structured review data you can.
+
+**Method 4 — Browser simulation via Python (`playwright` or `selenium`)**
+If the above methods fail or return insufficient data (e.g., JavaScript-rendered page, CAPTCHA-free but JS-required), write and run a Python script that:
+
+```python
+# Preferred: playwright (headless, async)
+from playwright.sync_api import sync_playwright
+import json, datetime
+
+def fetch_reviews_playwright(url, months=6):
+    cutoff = datetime.date.today() - datetime.timedelta(days=months * 30)
+    reviews = []
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(url, wait_until="networkidle")
+        # scroll, click "load more" / pagination buttons, extract review nodes
+        # parse date, rating, text from DOM
+        # stop when oldest review date < cutoff
+        browser.close()
+    return reviews
+```
+
+If `playwright` is not installed, fall back to `selenium`:
+
+```python
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+import time
+
+def fetch_reviews_selenium(url, months=6):
+    opts = Options()
+    opts.add_argument("--headless")
+    opts.add_argument("--no-sandbox")
+    driver = webdriver.Chrome(options=opts)
+    driver.get(url)
+    time.sleep(3)
+    # interact with pagination/load-more buttons
+    # parse review elements
+    driver.quit()
+```
+
+Install missing dependencies on the fly if needed:
+```bash
+pip install playwright && python -m playwright install chromium
+# or
+pip install selenium webdriver-manager
+```
+
+**Method 5 — `WebSearch` fallback**
+If all direct fetches fail, use `WebSearch` to find an alternative review platform for the same product (e.g., if the brand site is blocked, search for it on Trustpilot, G2, or Amazon) and restart the fetch pipeline from Method 1 with the new URL.
+
+### After fetching
+
+- Deduplicate by (date + rating + first 80 chars of text).
+- Filter to target time range only.
+- Report how many reviews were collected and which method succeeded.
 
 ### If product name only (no URL)
 Use `WebSearch` to find the most prominent review page. Proceed to fetch it directly — no
@@ -168,6 +243,32 @@ The output is a polished single-page dark-theme dashboard. Use **Chart.js** for 
 ## Step 5: Generate the slides deck
 
 Always generate a PowerPoint deck alongside the HTML dashboard.
+
+### Core Principles
+
+1. **Executive-Ready** — Each slide must be instantly understandable to a C-suite executive. No jargon, no ambiguity. 
+2. **Show, Don't Tell** — Generate visual previews, not abstract choices. People discover what they want by seeing it.
+3. **Distinctive Design** — No generic "AI slop." Every presentation must feel custom-crafted.
+4. **Viewport Fitting (NON-NEGOTIABLE)** — Every slide MUST fit exactly within 100vh. No scrolling within slides, ever. Content overflows? Split into multiple slides.
+
+### Design Aesthetics
+
+You tend to converge toward generic, "on distribution" outputs. In frontend design, this creates what users call the "AI slop" aesthetic. Avoid this: make creative, distinctive frontends that surprise and delight.
+
+Focus on:
+- Typography: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics.
+- Color & Theme: Commit to a cohesive aesthetic. Use CSS variables for consistency as just created from the HTML dashboard in step 4. Dominant colors with sharp accents outperform timid, evenly-distributed palettes. Draw from IDE themes and cultural aesthetics for inspiration.
+- Motion: Use animations for effects and micro-interactions. Prioritize CSS-only solutions for HTML. Use Motion library for React when available. Focus on high-impact moments: one well-orchestrated page load with staggered reveals (animation-delay) creates more delight than scattered micro-interactions.
+- Backgrounds: Create atmosphere and depth rather than defaulting to solid colors. Layer CSS gradients, use geometric patterns, or add contextual effects that match the overall aesthetic.
+
+Avoid generic AI-generated aesthetics:
+- Overused font families (Inter, Roboto, Arial, system fonts)
+- Cliched color schemes (particularly purple gradients on white backgrounds)
+- Predictable layouts and component patterns
+- Cookie-cutter design that lacks context-specific character
+
+Interpret creatively and make unexpected choices that feel genuinely designed for the context. Vary between light and dark themes, different fonts, different aesthetics. You still tend to converge on common choices (Space Grotesk, for example) across generations. Avoid this: it is critical that you think outside the box!
+
 
 Use `python-pptx` to create a PowerPoint. For charts, save Plotly figures as PNG images
 first (using `kaleido` or `orca`), then embed them. Slides:
