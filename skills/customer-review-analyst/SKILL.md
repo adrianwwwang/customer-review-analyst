@@ -2,11 +2,11 @@
 name: customer-review-analyst
 description: >
   Analyzes customer reviews for any product and produces a rich, interactive report.
-  Given a product review page URL (strongly recommended) or a product name to search,
-  the skill fetches reviews, classifies sentiment, generates interactive Plotly visualizations
+  Given an exact product review page URL,
+  the skill fetches reviews, classifies sentiment, generates interactive Chart.js visualizations
   (rating trend, sentiment trend, rating segmentation stacked chart), extracts top complaint
   themes with verbatim quotes, and produces prioritized action items. Outputs a self-contained
-  interactive HTML dashboard by default, with optional PowerPoint slides and PDF.
+  interactive HTML dashboard by default.
   Use this skill whenever a user wants to analyze product reviews, understand what customers
   are complaining about, track sentiment over time, benchmark a product's reception, or turn
   raw review data into an executive-ready report — even if they don't explicitly say
@@ -37,8 +37,7 @@ Store `OUTPUT_DIR = "."` throughout Steps 2–5.
 
 **If no URL is provided**, show exactly this and wait:
 
-> Please paste the review page URL to analyze:
-> Example: `https://www.trustpilot.com/review/tiktok.com`
+> Please provide the exact product review page URL to analyze.
 
 Once you have the URL, proceed immediately — no further questions.
 
@@ -56,9 +55,9 @@ For each review, extract:
 - `verified` (boolean, if present)
 - `helpful_votes` (integer, if present)
 
-Filter to reviews within the target time range. Aim for all reviews for meaningful analysis within the time range (follow pagination to hit that target). If you end up with fewer than 50 reviews, note it.
+Filter to reviews within the target time range. Aim for all reviews for meaningful analysis within the time range (follow pagination to hit that target). If you end up with fewer than 50 reviews after filtering, **widen the time range to 12 months and re-fetch before noting the limitation**. If still fewer than 50 after widening, proceed and call out the low sample size prominently in the executive summary.
 
-**Data storage:** Hold all fetched reviews a JSON array. Remove the JSON from disk unless the user explicitly passed `--save-data` or `--keep-data` in the invocation arguments.
+**Data storage:** Always persist the raw reviews to `[OUTPUT_DIR]/raw_reviews_[product-slug].json` immediately after fetching — before any analysis — so a re-run can skip the network phase. Remove the file at the end unless the user passed `--save-data` or `--keep-data`.
 
 ### Fetching strategy — try every method in order
 
@@ -73,6 +72,12 @@ Many review platforms expose a JSON API behind their pagination. Inspect the URL
 - Google Play: `https://play.google.com/store/apps/details?id=...&reviewSortOrder=...`
 - App Store, Amazon, Yelp, G2, Capterra: try documented or discoverable API endpoints with page/offset params
 
+**Tip:** For platforms that support it (Trustpilot, G2, some App Store endpoints), try appending `?count=100` before paginating — some APIs return all records in a single response. Do **not** apply this heuristic blindly to every platform; if the first probe returns the same count as a plain request, the param is ignored and you should switch straight to page-by-page iteration.
+
+**Pagination fast-exit:** After fetching each page, check whether **every item** on the page predates the cutoff. If so, stop immediately without fetching the next page — you have overshot the window. This avoids 1–2 wasteful requests at the boundary.
+
+**Parallel fetching (large datasets):** When the total page count can be estimated from the first response (e.g. total_count header or known page size × first page), use `concurrent.futures.ThreadPoolExecutor(max_workers=5)` to fetch pages in parallel, then merge and sort results by date. This cuts wall-clock fetch time by ~4× on APIs with 20+ pages.
+
 Fetch each page, extract the JSON payload, collect reviews, increment page until out of range.
 
 **Method 3 — `WebSearch` for cached / aggregated data**
@@ -80,6 +85,9 @@ Search for `site:trustpilot.com "{product}" reviews` or `"{product}" reviews aft
 
 **Method 4 — Browser simulation via Python (`playwright` or `selenium`)**
 If the above methods fail or return insufficient data (e.g., JavaScript-rendered page, CAPTCHA-free but JS-required), write and run a Python script that:
+
+> **Important:** Always write Python scripts to a file first using `create_file`, then execute with `python3 <path>`. Never use shell heredoc syntax (`<<'PY'`) — it corrupts the terminal session.
+> Use a **unique path per run** to avoid `create_file` collisions with leftovers from prior runs. Derive it from the product slug and date, e.g. `/tmp/fetch_reviews_[product-slug].py` and `/tmp/analyze_reviews_[product-slug].py`.
 
 ```python
 # Preferred: playwright (headless, async)
@@ -133,11 +141,11 @@ If all direct fetches fail, use `WebSearch` to find an alternative review platfo
 
 - Deduplicate by (date + rating + first 80 chars of text).
 - Filter to target time range only.
+- **Save raw data immediately** to `[OUTPUT_DIR]/raw_reviews_[product-slug].json` before proceeding to analysis.
 - Report how many reviews were collected and which method succeeded.
 
-### If product name only (no URL)
-Use `WebSearch` to find the most prominent review page. Proceed to fetch it directly — no
-need to confirm with the user first.
+### If URL is still missing
+Do not proceed with search-by-name. Ask the user for the exact product review page URL and wait.
 
 ---
 
@@ -154,8 +162,10 @@ Use the star rating as the primary signal:
 - 3 stars → neutral
 - 1–2 stars → negative
 
-Override when the review text clearly contradicts the rating (e.g., a 3-star review saying
-"completely broken" should be negative).
+Override **only** when the review text contains an explicit negation pattern that directly contradicts the rating:
+- Downgrade 4–5 → **negative** only if the text contains a negated problem phrase, e.g. `"doesn't work"`, `"stopped working"`, `"can't connect"`, `"completely broken"`, `"total waste"`. A few incidental negative keywords ("slow", "bug") in an otherwise positive review must **not** trigger a downgrade — require at least one explicit negation (`not`, `never`, `stopped`, `can't`, `won't`) adjacent to a core problem word.
+- Upgrade 1–2 → **neutral** only if the text contains strong unambiguous praise with no negation (`"love it"`, `"works great"`, `"amazing"`) and zero problem keywords.
+- Leave 3-star reviews as neutral unless a clear majority of the text is either pure praise or pure complaint.
 
 ### 3b. Monthly aggregation
 Group reviews by calendar month. For each month compute:
@@ -170,6 +180,7 @@ From negative and neutral reviews, identify **5–7 recurring complaint themes**
 - Give it a concise name (e.g., "Battery life", "Shipping delays", "App crashes")
 - Count how many reviews mention it
 - Pull **2–3 verbatim representative quotes** — short and punchy, capturing the frustration
+- **Deduplicate quotes at this stage** by the first 60 characters of each quote, across all themes — the `generate_html.py` renderer assumes all quotes in `analysis_results.json` are already unique and will not re-deduplicate
 - Assign severity: **High** (frequent + recent), **Medium**, or **Low**
 
 ### 3d. Action items
@@ -185,12 +196,12 @@ priority: **High / Medium / Low**. These should read like a PM's ticket titles, 
 ```bash
 python [OUTPUT_DIR]/scripts/generate_html.py \
   --data [OUTPUT_DIR]/analysis_results.json \
-  --output [OUTPUT_DIR]/customer_review_report_[product-slug]_[YYYY-MM-DD].html
+  --output [OUTPUT_DIR]/[productname]_report_[timestamp].html
 ```
 
 If the script doesn't exist yet, write it from scratch following the spec below.
 
-Save as: `[OUTPUT_DIR]/customer_review_report_[product-slug]_[YYYY-MM-DD].html`
+Save as: `[OUTPUT_DIR]/[productname]_report_[timestamp].html`
 
 ### Design — dark theme dashboard
 
@@ -203,6 +214,11 @@ The output is a polished single-page dark-theme dashboard. Use **Chart.js** for 
 - **Borders**: `#2a3555`
 - Cards have `border-radius: 12px`, subtle box-shadow, and lift on hover
 - Sections open with a fade-in slide-up animation (`opacity 0→1, translateY 20px→0`)
+- **Chart containers must have explicit height** to prevent Chart.js collapse. Apply:
+  ```css
+  .chart-card { min-height: 360px; display: flex; flex-direction: column; overflow: hidden; }
+  .chart-card canvas { display: block; width: 100% !important; height: 290px !important; }
+  ```
 
 ### Layout sections (top → bottom)
 
@@ -233,7 +249,7 @@ The output is a polished single-page dark-theme dashboard. Use **Chart.js** for 
 - Rating distribution donut chart
 - Top complaints horizontal bar chart
 
-**8. Key insights** — 2-column grid of insight cards (icon + title + quote from reviews)
+**8. Key insights** — 2-column grid of insight cards (icon + title + quote from reviews). Each card must use a quote that is **unique across all displayed cards** — deduplicate by the first 60 characters of the quote text.
 
 **9. Action items** — numbered list with priority pills (colored borders matching severity)
 
@@ -249,7 +265,7 @@ Tell the user:
 
 End with exactly this closing line (fill in the filename and resolve to absolute path):
 
-> Your report **[customer_review_report_product-slug_YYYY-MM-DD.html](absolute/path/to/file)** is ready.
+> Your report **[productname_customer_review_timestamp.html](absolute/path/to/file)** is ready.
 
 ---
 
@@ -262,7 +278,7 @@ Generates the dark-theme HTML dashboard. Placed at `[OUTPUT_DIR]/scripts/generat
 ```bash
 python [OUTPUT_DIR]/scripts/generate_html.py \
   --data [OUTPUT_DIR]/analysis_results.json \
-  --output [OUTPUT_DIR]/customer_review_report_[product-slug]_[YYYY-MM-DD].html
+  --output [OUTPUT_DIR]/[productname]_customer_review_[timestamp].html
 ```
 
 Expected `analysis_results.json` structure:
@@ -306,3 +322,5 @@ Expected `analysis_results.json` structure:
 
 The script is bundled at `scripts/generate_html.py`. If it is missing for any reason,
 write it from scratch following the dark-theme design spec in Step 4 above, using Chart.js.
+
+> **Implementation note:** The generator embeds HTML/CSS/JS inside a Python string. Because CSS and JS make heavy use of `{` and `}`, **do not use Python f-strings** for the template body — they require escaping every brace as `{{`/`}}`, which is error-prone at scale. Instead, write the HTML as a plain string with `__PLACEHOLDER__` tokens and replace them with `.replace()`, or use `string.Template` with `$var` syntax which has no conflict with CSS/JS braces.
