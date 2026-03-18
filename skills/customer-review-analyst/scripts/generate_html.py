@@ -350,25 +350,35 @@ tbody td{{ padding:12px 16px; color:var(--text-primary); vertical-align:middle; 
   background:linear-gradient(135deg,rgba(249,115,22,.08) 0%,rgba(251,146,60,.05) 100%);
   border:1px solid rgba(249,115,22,.25);
   border-radius:var(--radius); padding:28px 32px; margin-bottom:30px;
+  display:flex; flex-direction:column; gap:24px;
 }}
-.howto-desc{{ font-size:14px; color:var(--text-secondary); margin-bottom:20px; line-height:1.6; }}
-.howto-steps{{ display:flex; flex-direction:column; gap:14px; }}
-.howto-step{{ display:flex; align-items:flex-start; gap:16px; }}
-.howto-num{{
-  width:28px; height:28px; border-radius:50%; flex-shrink:0;
-  background:var(--accent-gradient); color:#fff; font-size:13px; font-weight:700;
-  display:flex; align-items:center; justify-content:center; margin-top:2px;
-}}
-.howto-text{{ font-size:14px; color:var(--text-primary); line-height:1.7; }}
-.howto-text a{{ color:var(--accent-3); text-decoration:none; }}
-.howto-text a:hover{{ text-decoration:underline; }}
+.howto-block{{ display:flex; flex-direction:column; gap:10px; }}
+.howto-label{{ font-size:12px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.6px; }}
+.howto-desc{{ font-size:14px; color:var(--text-secondary); line-height:1.6; }}
 .howto-code{{
-  display:inline-block; margin-top:8px;
+  display:block;
   background:var(--bg-secondary); border:1px solid var(--border-color);
-  border-radius:var(--radius-sm); padding:10px 16px;
+  border-radius:var(--radius-sm); padding:12px 16px;
   font-family:'SF Mono','Fira Code','Consolas',monospace; font-size:13px;
-  color:var(--accent-3); letter-spacing:.2px;
+  color:var(--accent-3); letter-spacing:.2px; word-break:break-all;
 }}
+.howto-btns{{ display:flex; gap:10px; flex-wrap:wrap; margin-top:2px; }}
+.howto-btn{{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:7px 16px; border-radius:var(--radius-sm); font-size:13px; font-weight:600;
+  text-decoration:none; cursor:pointer; transition:all .2s;
+}}
+.howto-btn-outline{{
+  background:transparent; color:var(--text-secondary);
+  border:1px solid var(--border-color);
+}}
+.howto-btn-outline:hover{{ border-color:var(--accent-1); color:var(--accent-3); }}
+.howto-btn-primary{{
+  background:var(--accent-gradient); color:#fff; border:none;
+}}
+.howto-btn-primary:hover{{ opacity:.88; }}
+.howto-divider{{ border:none; border-top:1px solid var(--border-color); margin:0; }}
+.howto-usage-note{{ font-size:13px; color:var(--text-muted); margin-top:4px; }}
 
 /* ── Footer ────────────────────────────────────────────────────── */
 .footer{{ text-align:center; padding:40px 30px; color:var(--text-muted); font-size:12px; border-top:1px solid var(--border-color); margin-top:40px; }}
@@ -534,29 +544,29 @@ tbody td{{ padding:12px 16px; color:var(--text-primary); vertical-align:middle; 
   <!-- How to -->
   <div class="section-title fade-in" id="how-to"><div class="icon">🚀</div> How to Get This Report</div>
   <div class="howto-card fade-in">
-    <p class="howto-desc">Generate an interactive report like this for any product — in one command.</p>
-    <div class="howto-steps">
-      <div class="howto-step">
-        <div class="howto-num">1</div>
-        <div class="howto-text">
-          <strong>Install the skill</strong> (one-time setup):
-          <div class="howto-code">cp -r customer-review-analyst/skills/customer-review-analyst ~/.claude/skills/</div>
-          <a href="https://github.com/adrianwwwang/customer-review-analyst#installation" target="_blank" style="display:inline-block;margin-top:6px;font-size:13px;">Full installation guide (Claude, Copilot, Cursor…) →</a>
-        </div>
-      </div>
-      <div class="howto-step">
-        <div class="howto-num">2</div>
-        <div class="howto-text"><strong>Open Claude Code chat</strong> in any project folder</div>
-      </div>
-      <div class="howto-step">
-        <div class="howto-num">3</div>
-        <div class="howto-text">
-          <strong>Type the command with any review page URL:</strong>
-          <div class="howto-code">/customer-review-analyst https://www.trustpilot.com/review/tiktok.com</div>
-        </div>
+
+    <!-- Install block -->
+    <div class="howto-block">
+      <div class="howto-label">Quick Install</div>
+      <p class="howto-desc">Copy the skill into your Claude skills folder (one-time setup):</p>
+      <div class="howto-code">cp -r customer-review-analyst/skills/customer-review-analyst ~/.claude/skills/</div>
+      <div class="howto-btns">
+        <a href="https://github.com/adrianwwwang/customer-review-analyst#installation"
+           target="_blank" class="howto-btn howto-btn-outline">Full install guide (Copilot, Cursor…) →</a>
+        <a href="#usage" class="howto-btn howto-btn-primary">How to →</a>
       </div>
     </div>
-    <p class="howto-desc" style="margin-top:20px;margin-bottom:0;">The full dashboard and slides are generated automatically — no other questions asked. &nbsp;<a href="https://github.com/adrianwwwang/customer-review-analyst#how-to" target="_blank">Learn more →</a></p>
+
+    <hr class="howto-divider">
+
+    <!-- Usage block -->
+    <div class="howto-block" id="usage">
+      <div class="howto-label">Usage</div>
+      <p class="howto-desc">Open Claude Code chat and type the command with any review page URL:</p>
+      <div class="howto-code">/customer-review-analyst https://www.trustpilot.com/review/tiktok.com</div>
+      <p class="howto-usage-note">The HTML dashboard and PowerPoint slides are generated automatically in your current folder — no other questions asked.</p>
+    </div>
+
   </div>
 
 </main>

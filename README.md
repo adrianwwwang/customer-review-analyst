@@ -6,18 +6,16 @@ An [agent skill](https://docs.github.com/en/copilot/concepts/agents/about-agent-
 
 Works with **Claude Code**, **GitHub Copilot**, **Cursor**, **Codex**, **Kiro**, **OpenClaw**, and any tool that supports the open `SKILL.md` standard.
 
-Give it a product review URL or just a product name, and it produces a self-contained HTML dashboard with trend charts, sentiment analysis, top complaint themes, verbatim quotes, and prioritized action items. Optionally generates PowerPoint slides and a PDF report.
+Give it a product review URL or just a product name, and it automatically produces two files in your current folder — no further questions asked.
 
 ---
 
 ## What it does
 
-| Output | Description | Always? |
-|--------|-------------|---------|
-| **HTML dashboard** | Dark-theme interactive single-file report | Yes |
-| **PowerPoint slides** | 7-slide deck for stakeholder presentations | Optional |
-| **PDF report** | Static version of the dashboard | Optional |
-| **Raw JSON** | Saved review data for future reuse | Optional |
+| Output | Description |
+|--------|-------------|
+| **HTML dashboard** | Dark-theme interactive single-file report with trend charts, sentiment analysis, complaint themes, verbatim quotes, and action items |
+| **PowerPoint slides** | 7-slide deck ready for stakeholder presentations |
 
 **Example output** — TikTok analysis · 154 reviews · Dec 2025–Mar 2026 · 2.18 avg rating · 67.5% negative sentiment:
 
