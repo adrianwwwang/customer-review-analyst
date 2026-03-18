@@ -15,8 +15,7 @@ Give it a product review URL or just a product name, and it automatically produc
 | Output | Description | Always? |
 |--------|-------------|---------|
 | **HTML dashboard** | Dark-theme interactive single-file report with trend charts, sentiment analysis, complaint themes, verbatim quotes, and action items | Yes |
-| **PDF report** | Static version of the dashboard | Optional |
-| **Raw JSON** | Saved review data for future reuse (pass `--save-data`) | Optional |
+| **Raw Data** | Saved review data for future reuse (pass `--save-data`) | Optional |
 
 **Example output** — TikTok analysis · 154 reviews · Dec 2025–Mar 2026 · 2.18 avg rating · 67.5% negative sentiment:
 
@@ -57,37 +56,6 @@ Step 5 ── Summary
           Sentiment split · top 3 complaints · top 3 actions
           → "Your report customer_review_report_xxx.html is ready."
 ```
-
-**Key files:**
-
-```
-customer-review-analyst/
-├── skills/
-│   └── customer-review-analyst/
-│       ├── SKILL.md                    # Skill definition — orchestration instructions
-│       └── scripts/
-│           └── generate_html.py        # HTML dashboard generator (~750 lines, Chart.js)
-├── cursor/
-│   └── rules/
-│       └── customer-review-analyst.mdc # Cursor rules file
-├── github-copilot/
-│   └── copilot-instructions.md         # Drop into .github/copilot-instructions.md
-├── .claude-plugin/
-│   ├── plugin.json                     # Claude Code marketplace metadata
-│   └── marketplace.json               # Claude Code marketplace registry
-└── evals/
-    └── evals.json                      # Evaluation test cases
-```
-
-**Runtime dependencies** (the AI installs these on demand via `pip`):
-
-| Package | Purpose | Required? |
-|---------|---------|-----------|
-| Chart.js | Interactive charts in HTML | Auto — loaded from CDN |
-| `playwright` | Headless browser for JS-rendered pages | Auto-installed if needed |
-| `selenium` | Browser fallback if playwright unavailable | Auto-installed if needed |
-| `weasyprint` | HTML → PDF | Only for `.pdf` output |
-
 ---
 
 ## Installation

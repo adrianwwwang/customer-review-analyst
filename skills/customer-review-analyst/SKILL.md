@@ -29,7 +29,6 @@ and visualizing review data into a polished, interactive report.
 |---------|-------------|
 | Time range | Last 6 months |
 | Output | HTML dashboard |
-| Review data | Fetch fresh, never save to disk |
 | Output directory | Current working directory |
 
 Store `OUTPUT_DIR = "."` throughout Steps 2–5.
@@ -57,7 +56,7 @@ For each review, extract:
 - `verified` (boolean, if present)
 - `helpful_votes` (integer, if present)
 
-Filter to reviews within the target time range. Aim for at least 50 reviews for meaningful analysis (follow pagination to hit that target). If you end up with fewer, note it.
+Filter to reviews within the target time range. Aim for all reviews for meaningful analysis within the time range (follow pagination to hit that target). If you end up with fewer than 50 reviews, note it.
 
 **Data storage:** Hold all fetched reviews a JSON array. Remove the JSON from disk unless the user explicitly passed `--save-data` or `--keep-data` in the invocation arguments.
 
